@@ -13,7 +13,7 @@ pontos que faz no momento (`a pontuação é conferida por um funcionário antes
 deve haver um arquivo `inscricoes.csv`, onde deve constar (`apenas dos processos ativos`) o CPF do professor,
 o código da disciplina e o código do processo.
 
-> [!WARNING] ATENÇÃO
+> [!WARNING]
 > Não se deve fazer inserções de dados diretamente nos arquivos CSV, apenas via sistema.
 
 O sistema deve conter, uma tela para CRUD (`inserção, atualização, remoção e consulta`) de disciplinas,
