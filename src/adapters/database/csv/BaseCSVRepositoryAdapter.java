@@ -1,12 +1,16 @@
 package adapters.database.csv;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import domain.entities.IEntity;
 import domain.repositories.IBaseRepository;
 
 public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> {
@@ -21,35 +25,102 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		this.fromString = fromString;
 	}
 
-	protected void salvarTodos(List<T> lista) {
+	protected void createFileIfNotExists(String filePath) {
+		try {
+			File file = new File(filePath);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+		} catch (IOException e) {
+			System.err.println("createFileIfNotExists:" + e.getMessage());
+		}
+	}
 
-		// TODO Auto-generated method stub
+	protected void saveAll(List<T> list) {
+
+		try {
+
+			this.createFileIfNotExists(this.filePath);
+
+			FileWriter fileWriter = new FileWriter(this.filePath);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+			for (T entity : list) {
+
+				bufferedWriter.write(toString.apply(entity));
+				bufferedWriter.newLine();
+				bufferedWriter.flush();
+			}
+
+			bufferedWriter.close();
+
+		} catch (IOException e) {
+			System.err.println("saveAll: " + e.getMessage());
+		}
 
 	}
 
 	@Override
 	public void save(T entity) {
-		
-		// TODO Auto-generated method stub
-
+		List<T> entities = list();
+		entities.add(entity);
+		this.saveAll(entities);
 	}
 
 	@Override
 	public void update(T entity) {
-		// TODO Auto-generated method stub
+		List<T> list = this.list();
+		Object primaryKey = ((IEntity) entity).getPrimaryKey();
 
+		for (int i = 0; i < list.size(); i++) {
+			T entityList = list.get(i);
+
+			if (((IEntity) entityList).getPrimaryKey().equals(primaryKey)) {
+
+				list.set(i, entity);
+				break;
+
+			}
+		}
+
+		this.saveAll(list);
 	}
 
 	@Override
 	public void delete(T entity) {
-		// TODO Auto-generated method stub
+		List<T> list = this.list();
 
+		Object entityCode = ((IEntity) entity).getPrimaryKey();
+		
+		for (int i = 0; i < list.size(); i++) {
+			T entityList = list.get(i);
+
+			if (((IEntity) entityList).getPrimaryKey().equals(entityCode)) {
+
+				list.remove(i);
+				this.saveAll(list);
+				break;
+
+			}
+		}
+	}
+
+	@Override
+	public T show(Object entityCode) {
+		List<T> list = this.list();
+		for (T entity : list) {
+			if (((IEntity) entity).getPrimaryKey() == entityCode) {
+				return entity;
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public List<T> list() {
 
-		// Variavel que irá arma
+		this.createFileIfNotExists(this.filePath);
+
 		List<T> list = new ArrayList<T>();
 
 		try {
