@@ -10,5 +10,7 @@ public interface IBaseRepository<T> {
 
 	public void delete(T entity);
 
+	public T show(Object entityPrimaryCode);
+	
 	public List<T> list();
 }
