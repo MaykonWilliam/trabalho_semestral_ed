@@ -4,7 +4,7 @@
 
 ## 🎯 Domínio da Aplicação
 ### Domínio:
-Uma faculdade deve fazer uma chamada pública para contratação temporária de docentes. Apenas funcionários tem acesso ao sistema. É necessário ter um arquivo chamado disciplinas.csv com as disciplinas disponíveis, é importante ter cadastrado o código da disciplina, o nome da disciplina, o dia da semana que será ministrada, o horário inicial que será ministrada, a quantidade de horas diárias e o código
+Uma faculdade deve fazer uma chamada pública para contratação temporária de docentes. Apenas funcionários tem acesso ao sistema. É necessário ter um arquivo chamado `disciplinas.csv` com as disciplinas disponíveis, é importante ter cadastrado o código da disciplina, o nome da disciplina, o dia da semana que será ministrada, o horário inicial que será ministrada, a quantidade de horas diárias e o código
 do curso ao qual a disciplina se adequa (`Uma disciplina pertence a apenas um curso`). Os cursos também devem estar disponibilizados em um arquivo chamado `cursos.csv` e, lá devem estar o código do curso, o nome do curso e a área do conhecimento ao qual ele pertence. Cada oferecimento de disciplina tem um
 código de processo.<br>
 Todos os professores que se inscreverem em algum processo devem estar cadastrado
