@@ -94,7 +94,7 @@ A estrutura segue os princípios da Clean Architecture, com separação clara en
   - [Maykon Wlliam](https://github.com/MaykonWilliam)
   - [Lucas Bezerra](https://github.com/LucasBMacedo)
   - [André Oliveira Batista](https://github.com/AndreOliveiraBatista)
-  - [Vinicius de Souza](#)
+  - [Vinicius de Souza Moreira](https://github.com/Vineee95)
   
 - **Disciplina:** Estrutura de Dados - ED
 - **Professor:** [Leandro Colevati](https://github.com/lecolevati)
