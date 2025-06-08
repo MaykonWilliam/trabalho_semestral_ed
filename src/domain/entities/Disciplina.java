@@ -13,6 +13,7 @@ public class Disciplina implements IEntity{
         this.dia_semana = dia_semana;
         this.hora_inicial = hora_inicial;
         this.hora_diaria = hora_diaria;
+        //teste
     }
 	
 	@Override
