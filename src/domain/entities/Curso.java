@@ -1,7 +1,7 @@
 package domain.entities;
 
-public class Curso implements IEntity{
-	
+public class Curso implements IEntity {
+
 	private int codigo;
 	private String nome;
 	private String area;
@@ -11,7 +11,12 @@ public class Curso implements IEntity{
 		this.nome = nome;
 		this.area = area;
 	}
-	
+
+	@Override
+	public Object getPrimaryKey() {
+		return this.codigo;
+	}
+
 	public int getCodigo() {
 		return codigo;
 	}
@@ -22,11 +27,6 @@ public class Curso implements IEntity{
 
 	public String getArea() {
 		return area;
-	}
-
-	@Override
-	public Object getPrimaryKey() {
-		return this.codigo;
 	}
 
 	public void setCodigo(int codigo) {
@@ -42,4 +42,3 @@ public class Curso implements IEntity{
 	}
 
 }
-
