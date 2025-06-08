@@ -5,9 +5,9 @@ public class Disciplina implements IEntity{
 	private String nome_disciplina;
 	private String dia_semana;
 	private String hora_inicial;
-	private Float hora_diaria;
+	private String hora_diaria;
 
-	public Disciplina(String codigo, String nome, String dia_semana, String hora_inicial, Float hora_diaria) {
+	public Disciplina(String codigo, String nome, String dia_semana, String hora_inicial, String hora_diaria) {
 		this.codigo_disciplina = codigo;
 	    this.nome_disciplina = nome;
         this.dia_semana = dia_semana;
@@ -52,11 +52,11 @@ public class Disciplina implements IEntity{
 		this.hora_inicial = hora_inicial;
 	}
 
-	public Float getHora_diaria() {
+	public String getHora_diaria() {
 		return hora_diaria;
 	}
 
-	public void setHora_diaria(Float hora_diaria) {
+	public void setHora_diaria(String hora_diaria) {
 		this.hora_diaria = hora_diaria;
 	}	
 }
