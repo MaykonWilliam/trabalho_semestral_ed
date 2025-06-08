@@ -22,14 +22,16 @@ public class Main {
 	
 
 	public static void main(String[] args) {
-      new MainView().setVisible(true);
+      // new MainView().setVisible(true);
+		disciplinaTeste();
 	}
 	
-	private static void DisciplinaTeste() {
-		// TODO Auto-generated method stub
-		Random rnd = new Random();
-		DisciplinaCSVRepositoryAdapter repositoryD = new DisciplinaCSVRepositoryAdapter("Disicplina.csv");
-		Disciplina disciplina;
+	private static void disciplinaTeste() {
+		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
+		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas");
+		repository.save(disciplina);
+		System.out.println("fim");
+		
 		
 		
 	}

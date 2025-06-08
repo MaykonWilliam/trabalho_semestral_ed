@@ -17,9 +17,8 @@ public class DisciplinaMapper{
 		String nome_disciplina = data[1];
 		String dia_semana = data[2];
 		String hora_inicial = data[3];
-		Float hora_diaria = Float.parseFloat(data[4]);
+		String hora_diaria = data[4];
 		
 		return new Disciplina(codigo_disciplina, nome_disciplina, dia_semana, hora_inicial, hora_diaria);
 	}
-
 }
