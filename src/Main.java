@@ -1,7 +1,8 @@
+
 import java.text.ParseException;
 import java.util.List;
 import java.util.Random;
-
+import views.MainView;
 import javax.swing.text.MaskFormatter;
 
 import adapters.database.csv.CursoCSVRepositoryAdapter;
@@ -15,19 +16,13 @@ public class Main {
 
 	public Main() {
 		// TODO Auto-generated constructor stub
+    
 	}
 	
 	
 
 	public static void main(String[] args) {
-//		cursoTeste();
-//		try {
-//			inscricaoTeste();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		DisciplinaTeste();
+      new MainView().setVisible(true);
 	}
 	
 	private static void DisciplinaTeste() {

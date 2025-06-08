@@ -36,10 +36,18 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		}
 	}
 
+	protected void deleteFileIfExists(String filePath) {
+		File file = new File(filePath);
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+
 	protected void saveAll(List<T> list) {
 
 		try {
 
+			this.deleteFileIfExists(filePath);
 			this.createFileIfNotExists(this.filePath);
 
 			FileWriter fileWriter = new FileWriter(this.filePath);
@@ -91,7 +99,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		List<T> list = this.list();
 
 		Object entityCode = ((IEntity) entity).getPrimaryKey();
-		
+
 		for (int i = 0; i < list.size(); i++) {
 			T entityList = list.get(i);
 
