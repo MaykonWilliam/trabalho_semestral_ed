@@ -117,13 +117,9 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 	@Override
 	public T show(Object entityCode) throws Exception {
 		List<T> list = this.list();
-<<<<<<< HEAD
 
 		for (int i = 0; i < list.size(); i++) {
 			T entity = list.get(i);
-=======
-		for (T entity : list) {
->>>>>>> 53120df (WIP)
 			if (((IEntity) entity).getPrimaryKey().equals(entityCode)) {
 				return entity;
 			}
@@ -145,8 +141,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			String line = bufferedReader.readLine();
 			while (line != null) {
 
-<<<<<<< HEAD
-				T entity = this.fromString.apply(line);
+				T entity = this.toEntity.apply(line);
 				if (list.isEmpty()) {
 					list.addFirst(entity);
 				} else {
