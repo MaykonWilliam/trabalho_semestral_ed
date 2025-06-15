@@ -8,9 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.function.Function;
 
-import br.edu.fateczl.Lista;
 import domain.entities.IEntity;
 import domain.repositories.IBaseRepository;
+
+import utils.List;
 
 public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> {
 
@@ -42,7 +43,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		}
 	}
 
-	protected void saveAll(Lista<T> lista) throws Exception {
+	protected void saveAll(List<T> list) throws Exception {
 
 		try {
 
@@ -51,9 +52,9 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 
 			FileWriter fileWriter = new FileWriter(this.filePath);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			
-			for(int i = 0; i < lista.size(); i++) {
-				T entity = lista.get(i);
+
+			for (int i = 0; i < list.size(); i++) {
+				T entity = list.get(i);
 				bufferedWriter.write(toString.apply(entity));
 				bufferedWriter.newLine();
 				bufferedWriter.flush();
@@ -69,44 +70,44 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 
 	@Override
 	public void save(T entity) throws Exception {
-		Lista<T> entities = lista();
+		List<T> entities = list();
 		entities.addLast(entity);
 		this.saveAll(entities);
 	}
 
 	@Override
 	public void update(T entity) throws Exception {
-		Lista<T> lista = this.lista();
+		List<T> list = this.list();
 		Object primaryKey = ((IEntity) entity).getPrimaryKey();
 
-		for (int i = 0; i < lista.size(); i++) {
-			T entityList = lista.get(i);
+		for (int i = 0; i < list.size(); i++) {
+			T entityList = list.get(i);
 
 			if (((IEntity) entityList).getPrimaryKey().equals(primaryKey)) {
 
-				lista.remove(i);
-				lista.add(entity, i);
+				list.remove(i);
+				list.add(entity, i);
 				break;
 
 			}
 		}
 
-		this.saveAll(lista);
+		this.saveAll(list);
 	}
 
 	@Override
 	public void delete(T entity) throws Exception {
-		Lista<T> lista = this.lista();
+		List<T> list = this.list();
 
 		Object entityCode = ((IEntity) entity).getPrimaryKey();
 
-		for (int i = 0; i < lista.size(); i++) {
-			T entityList = lista.get(i);
+		for (int i = 0; i < list.size(); i++) {
+			T entityList = list.get(i);
 
 			if (((IEntity) entityList).getPrimaryKey().equals(entityCode)) {
 
-				lista.remove(i);
-				this.saveAll(lista);
+				list.remove(i);
+				this.saveAll(list);
 				break;
 
 			}
@@ -115,10 +116,10 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 
 	@Override
 	public T show(Object entityCode) throws Exception {
-		Lista<T> lista = this.lista();
-		
-		for(int i = 0; i < lista.size(); i++) {
-			T entity = lista.get(i);
+		List<T> list = this.list();
+
+		for (int i = 0; i < list.size(); i++) {
+			T entity = list.get(i);
 			if (((IEntity) entity).getPrimaryKey().equals(entityCode)) {
 				return entity;
 			}
@@ -127,11 +128,11 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 	}
 
 	@Override
-	public Lista<T> lista() throws Exception {
+	public List<T> list() throws Exception {
 
 		this.createFileIfNotExists(this.filePath);
 
-		Lista<T> lista = new Lista<T>();
+		List<T> list = new List<T>();
 
 		try {
 			FileReader fileReader = new FileReader(this.filePath);
@@ -141,10 +142,10 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			while (line != null) {
 
 				T entity = this.fromString.apply(line);
-				if(lista.isEmpty()) {
-					lista.addFirst(entity);
+				if (list.isEmpty()) {
+					list.addFirst(entity);
 				} else {
-					lista.addLast(entity);
+					list.addLast(entity);
 				}
 				line = bufferedReader.readLine();
 			}
@@ -155,7 +156,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			System.err.println(e.getMessage());
 		}
 
-		return lista;
+		return list;
 	}
 
 }

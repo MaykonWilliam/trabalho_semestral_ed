@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import adapters.database.csv.ProfessorCSVRepositoryAdapter;
-import br.edu.fateczl.Lista;
+import utils.List;
 import domain.entities.Professor;
 
 public class ProfessorView extends JFrame {
@@ -91,7 +91,7 @@ public class ProfessorView extends JFrame {
 		txtAreaConhecimento = new JTextField();
 		txtAreaConhecimento.setBounds(10, 151, 540, 25);
 		getContentPane().add(txtAreaConhecimento);
-		
+
 		JLabel lblPontuacao = new JLabel("Pontuação");
 		lblPontuacao.setBounds(10, 191, 100, 20);
 		getContentPane().add(lblPontuacao);
@@ -214,17 +214,17 @@ public class ProfessorView extends JFrame {
 	}
 
 	private void findByCPF() throws Exception {
-			String cpf = txtCPF.getText().trim();
+		String cpf = txtCPF.getText().trim();
 
-			Professor record = repository.show(cpf);
+		Professor record = repository.show(cpf);
 
-			if (record == null) {
-				JOptionPane.showMessageDialog(null, "Registro não encontrado.", getTitle(), JOptionPane.WARNING_MESSAGE);
-				clearForm();
-				return;
-			}
-			professor = record;
-			loadData();
+		if (record == null) {
+			JOptionPane.showMessageDialog(null, "Registro não encontrado.", getTitle(), JOptionPane.WARNING_MESSAGE);
+			clearForm();
+			return;
+		}
+		professor = record;
+		loadData();
 	}
 
 	private void loadData() {
@@ -237,13 +237,13 @@ public class ProfessorView extends JFrame {
 	private boolean validateForm() throws Exception {
 
 		boolean isValid = true;
-		Lista<String> listaErros = new Lista<String>();
+		List<String> listaErros = new List<String>();
 
 		String cpf = txtCPF.getText().trim();
 		String nome = txtNomeProfessor.getText().trim();
 		String area = txtAreaConhecimento.getText().trim();
 		String pontuacao = txtPontuacao.getText().trim();
-		
+
 		if (cpf == null || cpf.isEmpty()) {
 			if(listaErros.isEmpty()) {
 				listaErros.addFirst("CPF inválido.");
@@ -270,7 +270,7 @@ public class ProfessorView extends JFrame {
 			}
 			isValid = false;
 		}
-		
+
 		if (pontuacao == null || pontuacao.isEmpty()) {
 			if(listaErros.isEmpty()) {
 				listaErros.addFirst("Pontuação inválida.");
@@ -279,10 +279,10 @@ public class ProfessorView extends JFrame {
 			}
 			isValid = false;
 		}
-		
+
 		StringBuffer messages = new StringBuffer();
 
-		for(int i = 0; i < listaErros.size(); i++) {
+		for (int i = 0; i < listaErros.size(); i++) {
 			messages.append(listaErros.get(i));
 			messages.append("\n");
 		}
@@ -328,7 +328,7 @@ public class ProfessorView extends JFrame {
 			}
 			txtCPF.setText(professor.getCpf());
 			txtCPF.requestFocusInWindow();
-			
+
 			JOptionPane.showMessageDialog(null, "Registro salvo com sucesso.", getTitle(), JOptionPane.INFORMATION_MESSAGE);
 
 			disableButtons();
