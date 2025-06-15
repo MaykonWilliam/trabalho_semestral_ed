@@ -3,7 +3,6 @@ package domain.entities;
 import domain.interfaces.IEntity;
 
 public class Inscricao  implements IEntity {
-
 	private int codigo;
 	private int codigo_disciplina;
 	private String cpf_professor;
@@ -54,6 +53,5 @@ public class Inscricao  implements IEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 
 }

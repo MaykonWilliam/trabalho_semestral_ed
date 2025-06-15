@@ -163,11 +163,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 				} else {
 					list.addLast(entity);
 				}
-=======
-				T entity = this.toEntity.apply(line);
-				list.add(entity);
 
->>>>>>> 53120df (WIP)
 				line = bufferedReader.readLine();
 			}
 
