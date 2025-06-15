@@ -1,14 +1,21 @@
 package views;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import adapters.database.csv.CursoCSVRepositoryAdapter;
-import domain.entities.Curso;
+import utils.List;
 
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
+import domain.entities.Curso;
 
 public class CursoView extends JFrame {
 
@@ -108,7 +115,11 @@ public class CursoView extends JFrame {
 		btnSave = new JButton("Salvar");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveAction();
+				try {
+					saveAction();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnSave.setIcon(new ImageIcon(getClass().getResource("/resources/icons/save.png")));
@@ -198,6 +209,8 @@ public class CursoView extends JFrame {
 		} catch (NumberFormatException ex) {
 			JOptionPane.showMessageDialog(null, "Digite um código válido.", getTitle(), JOptionPane.ERROR_MESSAGE);
 			return;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -207,27 +220,34 @@ public class CursoView extends JFrame {
 		txtArea.setText(curso.getArea());
 	}
 
-	private boolean validateForm() {
+	private boolean validateForm() throws Exception {
 
 		boolean isValid = true;
-		List<String> messages = new ArrayList<String>();
+		List<String> listaErros = new List<String>();
 
 		String nome = txtNome.getText().trim();
 		String area = txtArea.getText().trim();
 
-		if (nome.isEmpty()) {
-			messages.add("Nome inválido.");
+		if (nome == null || nome.isEmpty()) {
+			listaErros.addLast("Nome inválido.");
 			isValid = false;
 		}
 
-		if (area.isEmpty()) {
-			messages.add("Nome inválido.");
+		if (nome == null || area.isEmpty()) {
+			listaErros.addLast("Área inválida.");
 			isValid = false;
+		}
+
+		StringBuffer messages = new StringBuffer();
+
+		for (int i = 0; i < listaErros.size(); i++) {
+			messages.append(listaErros.get(i));
+			messages.append("\n");
 		}
 
 		if (isValid == false) {
 
-			String errorMessage = "Corrija os erros abaixo para continuar:\n\n" + String.join("\n", messages);
+			String errorMessage = "Corrija os erros abaixo para continuar:\n\n" + messages.toString();
 			JOptionPane.showMessageDialog(null, errorMessage, getTitle(), JOptionPane.WARNING_MESSAGE);
 		}
 
@@ -252,7 +272,7 @@ public class CursoView extends JFrame {
 		enableButtons();
 	}
 
-	private void saveAction() {
+	private void saveAction() throws Exception {
 		if (validateForm()) {
 
 			if (curso == null) {
@@ -290,7 +310,11 @@ public class CursoView extends JFrame {
 			return;
 		}
 
-		repository.delete(curso);
+		try {
+			repository.delete(curso);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		JOptionPane.showMessageDialog(null, "Registro Excluido com sucesso.", getTitle(), JOptionPane.INFORMATION_MESSAGE);
 
