@@ -1,8 +1,7 @@
 package adapters.database.csv;
 
-import java.util.List;
-
 import adapters.mappers.CursoMapper;
+import br.edu.fateczl.Lista;
 import domain.entities.Curso;
 import domain.repositories.ICursoRepository;
 
@@ -13,11 +12,12 @@ public class CursoCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Curso> i
 	}
 
 	@Override
-	public int getSequencePrimaryKey() {
-		List<Curso> list = this.list();
+	public int getSequencePrimaryKey() throws Exception {
+		Lista<Curso> lista = this.lista();
 		int lastPrimaryKey = 0;
-
-		for (Curso curso : list) {
+		
+		for(int i = 0; i < lista.size(); i++) {
+			Curso curso = lista.get(i);
 			lastPrimaryKey = (int) curso.getPrimaryKey();
 		}
 

@@ -4,9 +4,9 @@ public class Professor implements IEntity {
 	private String cpf;
 	private String nomeProfessor;
 	private String areaConhecimento;
-	private Integer pontuacao;
+	private int pontuacao;
 
-	public Professor(String cpf, String nomeProfessor, String areaConhecimento, Integer pontuacao) {
+	public Professor(String cpf, String nomeProfessor, String areaConhecimento, int pontuacao) {
 		super();
 		this.cpf = cpf;
 		this.nomeProfessor = nomeProfessor;

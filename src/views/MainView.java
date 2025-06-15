@@ -24,6 +24,23 @@ public class MainView extends JFrame {
 
 		// Menu
 		JMenuBar menuBar = new JMenuBar();
+		
+		// Início Professor
+		JMenuItem professorCadastrarMenuItem = new JMenuItem("Cadastrar Novo Professor");
+		JMenuItem professorListarMenuItem = new JMenuItem("Listar Professores");
+		
+		JMenu professorMenu = new JMenu("Professores");
+		professorMenu.add(professorCadastrarMenuItem);
+		professorMenu.add(professorListarMenuItem);
+		
+		professorCadastrarMenuItem.addActionListener(e -> {
+			ProfessorView professorView = new ProfessorView();
+			professorView.setVisible(true);
+		});
+		
+		menuBar.add(professorMenu);
+		
+		// Fim Professor
 
 		// Cursos
 		JMenuItem cursoCadastrarMenuItem = new JMenuItem("Cadastrar Novo Curso");

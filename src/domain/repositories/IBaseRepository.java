@@ -1,16 +1,16 @@
 package domain.repositories;
 
-import java.util.List;
+import br.edu.fateczl.Lista;
 
 public interface IBaseRepository<T> {
 	
-	public void save(T entity);
+	public void save(T entity) throws Exception;
 
-	public void update(T entity);
+	public void update(T entity) throws Exception;
 
-	public void delete(T entity);
+	public void delete(T entity) throws Exception;
 
-	public T show(Object entityPrimaryCode);
+	public T show(Object entityPrimaryCode) throws Exception;
 	
-	public List<T> list();
+	public Lista<T> lista() throws Exception;
 }

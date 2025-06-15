@@ -9,5 +9,4 @@ public class ProfessorCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Prof
 	public ProfessorCSVRepositoryAdapter(String filePath) {
 		super(filePath, ProfessorMapper::toString, ProfessorMapper::toEntity);
 	}
-
 }
