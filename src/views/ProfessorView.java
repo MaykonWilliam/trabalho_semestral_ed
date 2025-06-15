@@ -245,22 +245,38 @@ public class ProfessorView extends JFrame {
 		String pontuacao = txtPontuacao.getText().trim();
 
 		if (cpf == null || cpf.isEmpty()) {
-			listaErros.addLast("CPF inválido.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("CPF inválido.");
+			} else {
+				listaErros.addLast("CPF inválido.");
+			}
 			isValid = false;
 		}
 
 		if (nome == null || nome.isEmpty()) {
-			listaErros.addLast("Nome do professor inválido.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("Nome do Professor inválido.");
+			} else {
+				listaErros.addLast("Nome do Professor inválido.");
+			}
 			isValid = false;
 		}
 
 		if (area == null || area.isEmpty()) {
-			listaErros.addLast("Área de conhecimento inválida.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("Área de Conhecimento inválida.");
+			} else {
+				listaErros.addLast("Área de Conhecimento inválida.");
+			}
 			isValid = false;
 		}
 
 		if (pontuacao == null || pontuacao.isEmpty()) {
-			listaErros.addLast("Pontuação inválida.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("Pontuação inválida.");
+			} else {
+				listaErros.addLast("Pontuação inválida.");
+			}
 			isValid = false;
 		}
 

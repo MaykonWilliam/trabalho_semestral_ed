@@ -3,7 +3,12 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 public class MainView extends JFrame {
 
@@ -57,6 +62,23 @@ public class MainView extends JFrame {
 
 		menuBar.add(cursoMenu);
 		setJMenuBar(menuBar);
+		
+		// Início Disciplina
+					JMenuItem disciplinaCadastrarMenuItem = new JMenuItem("Cadastrar Nova Disciplina");
+					JMenuItem disciplinaListarMenuItem = new JMenuItem("Listar Disciplinas");
+					
+					JMenu disciplinaMenu = new JMenu("Disciplinas");
+					disciplinaMenu.add(disciplinaCadastrarMenuItem);
+					disciplinaMenu.add(disciplinaListarMenuItem);
+					
+					disciplinaCadastrarMenuItem.addActionListener(e -> {
+						ProfessorView professorView = new ProfessorView();
+						professorView.setVisible(true);
+					});
+					
+					menuBar.add(disciplinaMenu);
+					
+					// Fim Disciplina
 	}
 
 	public static void main(String[] args) {
