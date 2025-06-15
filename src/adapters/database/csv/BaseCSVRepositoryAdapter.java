@@ -17,12 +17,12 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 
 	protected final String filePath;
 	protected final Function<T, String> toString;
-	protected final Function<String, T> fromString;
+	protected final Function<String, T> toEntity;
 
 	public BaseCSVRepositoryAdapter(String filePath, Function<T, String> toString, Function<String, T> fromString) {
 		this.filePath = filePath;
 		this.toString = toString;
-		this.fromString = fromString;
+		this.toEntity = fromString;
 	}
 
 	protected void createFileIfNotExists(String filePath) {
@@ -141,12 +141,13 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			String line = bufferedReader.readLine();
 			while (line != null) {
 
-				T entity = this.fromString.apply(line);
+        T entity = this.fromString.apply(line);
 				if (list.isEmpty()) {
 					list.addFirst(entity);
 				} else {
 					list.addLast(entity);
 				}
+
 				line = bufferedReader.readLine();
 			}
 
