@@ -228,12 +228,20 @@ public class CursoView extends JFrame {
 		String area = txtArea.getText().trim();
 
 		if (nome == null || nome.isEmpty()) {
-			listaErros.addLast("Nome inválido.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("Nome inválido.");
+			} else {
+				listaErros.addLast("Nome inválido.");
+			}
 			isValid = false;
 		}
 
 		if (nome == null || area.isEmpty()) {
-			listaErros.addLast("Área inválida.");
+			if(listaErros.isEmpty()) {
+				listaErros.addFirst("Área inválido.");
+			} else {
+				listaErros.addLast("Área inválido.");
+			}
 			isValid = false;
 		}
 		
