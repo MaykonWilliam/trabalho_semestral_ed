@@ -1,11 +1,9 @@
 package domain.entities;
 
-<<<<<<< HEAD
-public class Inscricao implements IEntity {
-=======
+import domain.interfaces.IEntity;
 
-public class Inscricao implements IEntity{
->>>>>>> 53120df (WIP)
+public class Inscricao  implements IEntity {
+
 	private int codigo;
 	private int codigo_disciplina;
 	private String cpf_professor;
@@ -57,9 +55,5 @@ public class Inscricao implements IEntity{
 		this.status = status;
 	}
 
-	@Override
-	public Object getPrimaryKey() {
-		return this.codigo;
-	}
 
 }
