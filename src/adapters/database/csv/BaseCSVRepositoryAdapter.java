@@ -141,7 +141,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			String line = bufferedReader.readLine();
 			while (line != null) {
 
-        T entity = this.fromString.apply(line);
+				T entity = this.toEntity.apply(line);
 				if (list.isEmpty()) {
 					list.addFirst(entity);
 				} else {
