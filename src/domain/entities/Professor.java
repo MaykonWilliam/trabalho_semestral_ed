@@ -1,5 +1,7 @@
 package domain.entities;
 
+import domain.interfaces.IEntity;
+
 public class Professor implements IEntity {
 	private String cpf;
 	private String nomeProfessor;

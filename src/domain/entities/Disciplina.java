@@ -1,63 +1,74 @@
 package domain.entities;
 
-public class Disciplina implements IEntity{
-	private String codigo_disciplina;
-	private String nome_disciplina;
-	private String dia_semana;
-	private String hora_inicial;
-	private String hora_diaria;
+import domain.interfaces.IEntity;
 
-	public Disciplina(String codigo, String nome, String dia_semana, String hora_inicial, String hora_diaria) {
-		this.codigo_disciplina = codigo;
-	    this.nome_disciplina = nome;
-        this.dia_semana = dia_semana;
-        this.hora_inicial = hora_inicial;
-        this.hora_diaria = hora_diaria;
-        //teste
-    }
-	
+public class Disciplina implements IEntity {
+	private String codigo;
+	private String nome;
+	private String diaSemana;
+	private String horarioInicial;
+	private String horasDiarias;
+	private Object codigoCurso;
+
+	public Disciplina(String codigo, String nome, String diaSemana, String horarioInicial, String horasDiarias, Object codigoCurso) {
+		this.setCodigo(codigo);
+		this.setNome(nome);
+		this.setDiaSemana(diaSemana);
+		this.setHorarioInicial(horarioInicial);
+		this.setHorasDiarias(horasDiarias);
+		this.setCodigoCurso(codigoCurso);
+	}
+
 	@Override
 	public Object getPrimaryKey() {
-		return codigo_disciplina;
+		return codigo;
 	}
 
-	public String getCodigo_disciplina() {
-		return codigo_disciplina;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public void setCodigo_disciplina(String codigo_disciplina) {
-		this.codigo_disciplina = codigo_disciplina;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
-	public String getNome_disciplina() {
-		return nome_disciplina;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setNome_disciplina(String nome_disciplina) {
-		this.nome_disciplina = nome_disciplina;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getDia_semana() {
-		return dia_semana;
+	public String getDiaSemana() {
+		return diaSemana;
 	}
 
-	public void setDia_semana(String dia_semana) {
-		this.dia_semana = dia_semana;
+	public void setDiaSemana(String diaSemana) {
+		this.diaSemana = diaSemana;
 	}
 
-	public String getHora_inicial() {
-		return hora_inicial;
+	public String getHorarioInicial() {
+		return horarioInicial;
 	}
 
-	public void setHora_inicial(String hora_inicial) {
-		this.hora_inicial = hora_inicial;
+	public void setHorarioInicial(String horarioInicial) {
+		this.horarioInicial = horarioInicial;
 	}
 
-	public String getHora_diaria() {
-		return hora_diaria;
+	public String getHorasDiarias() {
+		return horasDiarias;
 	}
 
-	public void setHora_diaria(String hora_diaria) {
-		this.hora_diaria = hora_diaria;
-	}	
+	public void setHorasDiarias(String horasDiarias) {
+		this.horasDiarias = horasDiarias;
+	}
+
+	public Object getCodigoCurso() {
+		return codigoCurso;
+	}
+
+	public void setCodigoCurso(Object codigoCurso) {
+		this.codigoCurso = codigoCurso;
+	}
 }

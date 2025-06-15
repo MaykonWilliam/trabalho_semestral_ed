@@ -19,33 +19,25 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new MainView().setVisible(true);
-		// runAllTests();
+		// new MainView().setVisible(true);
+		runAllTests();
 
 	}
 
 	private static void runAllTests() throws Exception {
-		disciplinaTeste();
-		inscricaoTeste();
 		cursoTeste();
+		inscricaoTeste();
 	}
 
 	private static void disciplinaTeste() throws Exception {
-		System.out.println("_______________________________________");
-		System.out.println("_____________TESTE DISCIPLINA _________");
-		System.out.println("_______________________________________");
 		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
-		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas");
+		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas", 1);
 		repository.save(disciplina);
-		System.out.println("fim");
 
 	}
 
 	private static void inscricaoTeste() throws Exception {
 
-		System.out.println("_______________________________________");
-		System.out.println("_____________TESTE INSCRIÇÃO_ _________");
-		System.out.println("_______________________________________");
 		Random rnd = new Random();
 		StringBuilder resultado = new StringBuilder();
 		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricao.csv");
@@ -70,16 +62,14 @@ public class Main {
 		List<Inscricao> inscricoes = repository.list();
 		for (int i = 0; i < inscricoes.size(); i++) {
 			Inscricao inscricaoItem = inscricoes.get(i);
-			System.out.println(inscricaoItem.getCodigo() + " - " + inscricaoItem.getCpfProfessor());
+
 		}
-		System.out.println("----------------Fim list");
 
 		// READ
 		inscricao = repository.show(5);
 		if (inscricao != null) {
-			System.out.println(inscricao.getCpfProfessor());
+
 		}
-		System.out.println("----------------Fim Read");
 
 		// UPDATE
 		inscricao = repository.show(5);
@@ -94,9 +84,8 @@ public class Main {
 		inscricoes = repository.list();
 		for (int i = 0; i < inscricoes.size(); i++) {
 			Inscricao inscricaoItem = inscricoes.get(i);
-			System.out.println(inscricaoItem.getCpfProfessor());
+
 		}
-		System.out.println("----------------Fim list");
 
 	}
 
@@ -155,6 +144,19 @@ public class Main {
 		for (int i = 0; i < cursos.size(); i++) {
 			Curso cursoItem = cursos.get(i);
 			System.out.println(cursoItem.getNome());
+		}
+		
+		disciplinaTeste();
+		
+		curso = repository.show(1);
+		if (curso != null) {
+			List<Disciplina> disciplinasCurso = curso.getRelatedEntities();
+			System.out.println("Relação Encontradas");
+			for (int d = 0; d < disciplinasCurso.size(); d++) {
+				Disciplina disciplinaCurso = disciplinasCurso.get(d);
+				System.out.println("Relação Main" + disciplinaCurso.getNome());
+			}
+			repository.delete(curso);
 		}
 	}
 
