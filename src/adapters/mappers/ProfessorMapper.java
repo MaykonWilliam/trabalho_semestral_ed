@@ -12,6 +12,6 @@ public class ProfessorMapper {
 
 		String[] data = record.split(";");
 
-		return new Professor(data[0], data[1], data[2], Integer.parseInt(data[4]));
+		return new Professor(data[0], data[1], data[2], Integer.parseInt(data[3]));
 	}
 }

@@ -1,6 +1,6 @@
 package domain.repositories;
 
-import br.edu.fateczl.Lista;
+import utils.List;
 
 public interface IBaseRepository<T> {
 	
@@ -12,5 +12,5 @@ public interface IBaseRepository<T> {
 
 	public T show(Object entityPrimaryCode) throws Exception;
 	
-	public Lista<T> lista() throws Exception;
+	public List<T> list() throws Exception;
 }

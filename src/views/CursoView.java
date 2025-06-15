@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import adapters.database.csv.CursoCSVRepositoryAdapter;
-import br.edu.fateczl.Lista;
+import utils.List;
+
 import domain.entities.Curso;
 
 public class CursoView extends JFrame {
@@ -222,7 +223,7 @@ public class CursoView extends JFrame {
 	private boolean validateForm() throws Exception {
 
 		boolean isValid = true;
-		Lista<String> listaErros = new Lista<String>();
+		List<String> listaErros = new List<String>();
 
 		String nome = txtNome.getText().trim();
 		String area = txtArea.getText().trim();
@@ -236,10 +237,10 @@ public class CursoView extends JFrame {
 			listaErros.addLast("Área inválida.");
 			isValid = false;
 		}
-		
+
 		StringBuffer messages = new StringBuffer();
-		
-		for(int i = 0; i < listaErros.size(); i++) {
+
+		for (int i = 0; i < listaErros.size(); i++) {
 			messages.append(listaErros.get(i));
 			messages.append("\n");
 		}
