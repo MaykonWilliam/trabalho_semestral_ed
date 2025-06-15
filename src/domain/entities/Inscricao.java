@@ -1,6 +1,6 @@
 package domain.entities;
 
-public class Inscricao {
+public class Inscricao implements IEntity {
 	private int codigo;
 	private int codigo_disciplina;
 	private String cpf_professor;
@@ -21,6 +21,11 @@ public class Inscricao {
 	
 	public String getCpfProfessor() {
 		return this.cpf_professor;
+	}
+
+	@Override
+	public Object getPrimaryKey() {
+		return this.codigo;
 	}
 
 }
