@@ -6,9 +6,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.function.Function;
 
-import domain.entities.IEntity;
+import domain.interfaces.IEntity;
+import domain.interfaces.IHasMany;
 import domain.repositories.IBaseRepository;
 
 import utils.List;
@@ -18,6 +20,8 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 	protected final String filePath;
 	protected final Function<T, String> toString;
 	protected final Function<String, T> toEntity;
+
+	protected abstract BaseCSVRepositoryAdapter<?> getRepositoryFor(Class<?> entityClass);
 
 	public BaseCSVRepositoryAdapter(String filePath, Function<T, String> toString, Function<String, T> fromString) {
 		this.filePath = filePath;
@@ -106,6 +110,13 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 
 			if (((IEntity) entityList).getPrimaryKey().equals(entityCode)) {
 
+				if (entityList instanceof IHasMany) {
+
+					if (entityList instanceof IHasMany) {
+						deleteRelatedEntities(entityList);
+					}
+
+				}
 				list.remove(i);
 				this.saveAll(list);
 				break;
@@ -121,6 +132,11 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		for (int i = 0; i < list.size(); i++) {
 			T entity = list.get(i);
 			if (((IEntity) entity).getPrimaryKey().equals(entityCode)) {
+				if (entity instanceof IHasMany) {
+					List<T> relatedEntities = loadRelationships(entity);
+					((IHasMany) entity).setRelatedEntities(relatedEntities);
+				}
+
 				return entity;
 			}
 		}
@@ -160,4 +176,104 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		return list;
 	}
 
+	protected List<T> loadRelationships(T entity) {
+		if (!(entity instanceof IHasMany)) {
+			return new List<>();
+		}
+
+		IHasMany<?> hasMany = (IHasMany<?>) entity;
+		Class<?> relatedClass = hasMany.getRelatedEntityClass();
+		String foreignKeyField = hasMany.getForeignKeyFieldName();
+		Object primaryKey = ((IEntity) entity).getPrimaryKey();
+
+		try {
+			BaseCSVRepositoryAdapter<?> relatedRepository = getRepositoryFor(relatedClass);
+
+			if (relatedRepository != null) {
+				List<?> allRelatedEntities = relatedRepository.list();
+				List<T> filteredEntities = new List<T>();
+
+				for (int i = 0; i < allRelatedEntities.size(); i++) {
+					Object relatedEntity = allRelatedEntities.get(i);
+					Object foreignKeyValue = getFieldValue(relatedEntity, foreignKeyField);
+
+					if (primaryKey.equals(foreignKeyValue)) {
+						filteredEntities.addLast((T) relatedEntity);
+					}
+				}
+
+				return filteredEntities;
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
+		return new List<>();
+	}
+
+	private Object getFieldValue(Object entity, String fieldName) {
+		try {
+
+			String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+			Method getter = entity.getClass().getMethod(getterName);
+			return getter.invoke(entity);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
+
+	private void deleteRelatedEntities(T entity) throws Exception {
+		if (!(entity instanceof IHasMany)) {
+			return;
+		}
+
+		IHasMany<?> hasMany = (IHasMany<?>) entity;
+		Class<?> relatedClass = hasMany.getRelatedEntityClass();
+		String foreignKeyField = hasMany.getForeignKeyFieldName();
+		Object primaryKey = ((IEntity) entity).getPrimaryKey();
+
+		try {
+
+			BaseCSVRepositoryAdapter<?> relatedRepository = getRepositoryFor(relatedClass);
+
+			if (relatedRepository != null) {
+				List<?> allRelatedEntities = relatedRepository.list();
+				List<Object> entitiesToDelete = new List<>();
+
+				for (int i = 0; i < allRelatedEntities.size(); i++) {
+					Object relatedEntity = allRelatedEntities.get(i);
+					Object foreignKeyValue = getFieldValue(relatedEntity, foreignKeyField);
+
+					if (primaryKey.equals(foreignKeyValue)) {
+						entitiesToDelete.addLast(relatedEntity);
+					}
+				}
+
+				for (int i = 0; i < entitiesToDelete.size(); i++) {
+					Object entityToDelete = entitiesToDelete.get(i);
+					relatedRepository.deleteEntity(entityToDelete);
+				}
+			}
+
+		} catch (Exception e) {
+			System.err.println("Erro ao deletar entidades relacionadas: " + e.getMessage());
+
+		}
+	}
+
+	private void deleteEntity(Object entity) throws Exception {
+		List<Object> list = (List<Object>) this.list();
+		Object entityCode = ((IEntity) entity).getPrimaryKey();
+
+		for (int i = 0; i < list.size(); i++) {
+			Object entityList = list.get(i);
+
+			if (((IEntity) entityList).getPrimaryKey().equals(entityCode)) {
+				list.remove(i);
+				this.saveAll((List<T>) list);
+				break;
+			}
+		}
+	}
 }
