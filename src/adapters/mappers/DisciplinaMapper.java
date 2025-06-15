@@ -2,13 +2,11 @@ package adapters.mappers;
 
 import domain.entities.Disciplina;
 
-public class DisciplinaMapper{
-
+public class DisciplinaMapper {
 
 	static public String toString(Disciplina entity) {
-		return entity.getCodigo_disciplina() + ";" + entity.getNome_disciplina() + ";" + entity.getDia_semana() + ";" + entity.getHora_inicial() + ";" + entity.getHora_diaria() + ";";
+		return entity.getCodigo() + ";" + entity.getNome() + ";" + entity.getDiaSemana() + ";" + entity.getHorarioInicial() + ";" + entity.getHorasDiarias() + ";"+ entity.getCodigoCurso() + ";";
 	}
-
 
 	static public Disciplina toEntity(String record) {
 		String[] data = record.split(";");
@@ -18,7 +16,8 @@ public class DisciplinaMapper{
 		String dia_semana = data[2];
 		String hora_inicial = data[3];
 		String hora_diaria = data[4];
-		
-		return new Disciplina(codigo_disciplina, nome_disciplina, dia_semana, hora_inicial, hora_diaria);
+		int codigo_curso = Integer.parseInt(data[5]);
+
+		return new Disciplina(codigo_disciplina, nome_disciplina, dia_semana, hora_inicial, hora_diaria, codigo_curso);
 	}
 }

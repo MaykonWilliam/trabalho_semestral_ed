@@ -1,6 +1,4 @@
 
-import java.text.ParseException;
-import java.util.List;
 import java.util.Random;
 import views.MainView;
 import javax.swing.text.MaskFormatter;
@@ -12,92 +10,90 @@ import domain.entities.Curso;
 import domain.entities.Disciplina;
 import domain.entities.Inscricao;
 
+import utils.List;
+
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
-    
+		super();
 	}
-	
-	
 
-	public static void main(String[] args) {
-      // new MainView().setVisible(true);
-		disciplinaTeste();
+	public static void main(String[] args) throws Exception {
+		// new MainView().setVisible(true);
+		runAllTests();
+
 	}
-	
-	private static void disciplinaTeste() {
+
+	private static void runAllTests() throws Exception {
+		cursoTeste();
+		inscricaoTeste();
+	}
+
+	private static void disciplinaTeste() throws Exception {
 		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
-		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas");
+		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas", 1);
 		repository.save(disciplina);
-		System.out.println("fim");
-		
-		
-		
+
 	}
-
-
 
 	private static void inscricaoTeste() throws Exception {
-		
-		
+
 		Random rnd = new Random();
 		StringBuilder resultado = new StringBuilder();
 		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricao.csv");
 		Inscricao inscricao;
-		
-		//CREATE
-		MaskFormatter mask = new MaskFormatter("###.###.###-##");
-        mask.setValueContainsLiteralCharacters(false); // permite passar só os números
-		
-		for(int i = 0; i < 10; i++) {
-			 for (int j = 0; j < 11; j++) {
-		            int digito = rnd.nextInt(10); // Gera número de 0 a 9
-		            resultado.append(digito);
-		     }
 
-		    String cpf = resultado.toString();
-			inscricao = new Inscricao(i, i+100, mask.valueToString(cpf), "pendente");
+		// CREATE
+		MaskFormatter mask = new MaskFormatter("###.###.###-##");
+		mask.setValueContainsLiteralCharacters(false); // permite passar só os números
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 11; j++) {
+				int digito = rnd.nextInt(10); // Gera número de 0 a 9
+				resultado.append(digito);
+			}
+
+			String cpf = resultado.toString();
+			inscricao = new Inscricao(i, i + 100, mask.valueToString(cpf), "pendente");
 			repository.save(inscricao);
 		}
-		
-		//LIST
+
+		// LIST
 		List<Inscricao> inscricoes = repository.list();
-		for (Inscricao inscricaoItem : inscricoes) {
-			System.out.println(inscricaoItem.getCodigo() + " - " + inscricaoItem.getCpfProfessor());
+		for (int i = 0; i < inscricoes.size(); i++) {
+			Inscricao inscricaoItem = inscricoes.get(i);
+
 		}
-		System.out.println("----------------Fim list");
-		
-		//READ
+
+		// READ
 		inscricao = repository.show(5);
-		if(inscricao != null) {
-			System.out.println(inscricao.getCpfProfessor());
+		if (inscricao != null) {
+
 		}
-		System.out.println("----------------Fim Read");
-		
-		//UPDATE
+
+		// UPDATE
 		inscricao = repository.show(5);
 		inscricao.setCpf_professor("123.123.123-00");
 		repository.update(inscricao);
-		
-		//DELETE
+
+		// DELETE
 		inscricao = repository.show(9);
 		repository.delete(inscricao);
-		
-		
-		//LIST
+
+		// LIST
 		inscricoes = repository.list();
-		for (Inscricao inscricaoItem : inscricoes) {
-			System.out.println(inscricaoItem.getCpfProfessor());
+		for (int i = 0; i < inscricoes.size(); i++) {
+			Inscricao inscricaoItem = inscricoes.get(i);
+
 		}
-		System.out.println("----------------Fim list");
-		
+
 	}
 
+	private static void cursoTeste() throws Exception {
 
-
-	private static void cursoTeste() {
-
+		System.out.println("_______________________________________");
+		System.out.println("_____________TESTE CURSO_____ _________");
+		System.out.println("_______________________________________");
 		CursoCSVRepositoryAdapter repository = new CursoCSVRepositoryAdapter("cursos.csv");
 
 		// CREATE
@@ -110,7 +106,8 @@ public class Main {
 
 		// LIST
 		List<Curso> cursos = repository.list();
-		for (Curso cursoItem : cursos) {
+		for (int i = 0; i < cursos.size(); i++) {
+			Curso cursoItem = cursos.get(i);
 			System.out.println(cursoItem.getNome());
 		}
 		System.out.println("--------------FIM LIST");
@@ -143,10 +140,24 @@ public class Main {
 		System.out.println("--------------FIM DELETE");
 
 		cursos = repository.list();
-		for (Curso cursoItem : cursos) {
+
+		for (int i = 0; i < cursos.size(); i++) {
+			Curso cursoItem = cursos.get(i);
 			System.out.println(cursoItem.getNome());
 		}
+		
+		disciplinaTeste();
+		
+		curso = repository.show(1);
+		if (curso != null) {
+			List<Disciplina> disciplinasCurso = curso.getRelatedEntities();
+			System.out.println("Relação Encontradas");
+			for (int d = 0; d < disciplinasCurso.size(); d++) {
+				Disciplina disciplinaCurso = disciplinasCurso.get(d);
+				System.out.println("Relação Main" + disciplinaCurso.getNome());
+			}
+			repository.delete(curso);
+		}
 	}
-	
 
 }
