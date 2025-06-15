@@ -1,6 +1,4 @@
 
-import java.text.ParseException;
-
 import java.util.Random;
 import views.MainView;
 import javax.swing.text.MaskFormatter;
@@ -17,13 +15,12 @@ import utils.List;
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
-
+		super();
 	}
 
 	public static void main(String[] args) throws Exception {
-		// new MainView().setVisible(true);
-		runAllTests();
+		new MainView().setVisible(true);
+		// runAllTests();
 
 	}
 
