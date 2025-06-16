@@ -132,12 +132,12 @@ Algoritmo de ordenação implementado manualmente, sem uso de bibliotecas intern
 ---
 
 ## 📌 Casos de Uso
-<img width="80px" src="./docs/bouncing-circles.svg"/>
+<img width="930px" src="./docs/usecases.png"/>
 
 ---
 
 ## 📦 Diagrama de Classes
-<img width="800px" src="./docs/image.jpeg"/>
+<img width="930px" src="./docs/image.jpeg"/>
 
 ---
 
