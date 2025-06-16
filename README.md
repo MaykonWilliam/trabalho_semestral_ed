@@ -137,7 +137,7 @@ Algoritmo de ordenação implementado manualmente, sem uso de bibliotecas intern
 ---
 
 ## 📦 Diagrama de Classes
-<img width="80px" src="./docs/image.jpeg"/>
+<img width="400px" src="./docs/image.jpeg"/>
 
 ---
 
