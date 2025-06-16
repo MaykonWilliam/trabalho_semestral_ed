@@ -1,6 +1,7 @@
 <!-- Documentação para criação do arquivo README.md -->
 <!-- https://docs.github.com/pt/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax -->
 
+# 📚 Trabalho Semestral ED - Gerenciamento de Docentes
 
 ## 🧑‍💻 Equipe
 
@@ -16,7 +17,6 @@
 
 ---
 
-# 📚 Trabalho Semestral ED - Gerenciamento de Docentes
 
 ## 🎯 Domínio da Aplicação
 ### Domínio:
