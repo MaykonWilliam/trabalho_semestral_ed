@@ -12,7 +12,6 @@ import java.util.function.Function;
 import domain.interfaces.IEntity;
 import domain.interfaces.IHasMany;
 import domain.repositories.IBaseRepository;
-
 import utils.List;
 
 public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> {

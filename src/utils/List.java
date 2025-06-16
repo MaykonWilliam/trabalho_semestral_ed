@@ -56,6 +56,7 @@ public class List<T> {
 		if (isEmpty()) {
 //			throw new Exception("Lista Vazia");
 			addFirst(data);
+			return;
 		}
 		int listSize = size();
 		No<T> element = new No<>();

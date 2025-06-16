@@ -64,21 +64,38 @@ public class MainView extends JFrame {
 		setJMenuBar(menuBar);
 		
 		// Início Disciplina
-					JMenuItem disciplinaCadastrarMenuItem = new JMenuItem("Cadastrar Nova Disciplina");
-					JMenuItem disciplinaListarMenuItem = new JMenuItem("Listar Disciplinas");
-					
-					JMenu disciplinaMenu = new JMenu("Disciplinas");
-					disciplinaMenu.add(disciplinaCadastrarMenuItem);
-					disciplinaMenu.add(disciplinaListarMenuItem);
-					
-					disciplinaCadastrarMenuItem.addActionListener(e -> {
-						ProfessorView professorView = new ProfessorView();
-						professorView.setVisible(true);
-					});
-					
-					menuBar.add(disciplinaMenu);
-					
-					// Fim Disciplina
+		JMenuItem disciplinaCadastrarMenuItem = new JMenuItem("Cadastrar Nova Disciplina");
+		JMenuItem disciplinaListarMenuItem = new JMenuItem("Listar Disciplinas");
+		
+		JMenu disciplinaMenu = new JMenu("Disciplinas");
+		disciplinaMenu.add(disciplinaCadastrarMenuItem);
+		disciplinaMenu.add(disciplinaListarMenuItem);
+		
+		disciplinaCadastrarMenuItem.addActionListener(e -> {
+			DisciplinaView disciplinaView = new DisciplinaView();
+			disciplinaView.setVisible(true);
+		});
+		
+		menuBar.add(disciplinaMenu);
+		
+		// Fim Disciplina
+		
+		// Início Inscrições
+		JMenuItem inscricaoCadastrarMenuItem = new JMenuItem("Cadastrar Nova Inscrição");
+		JMenuItem inscricaoListarMenuItem = new JMenuItem("Listar Inscrições");
+		
+		JMenu inscricaoMenu = new JMenu("Inscrições");
+		inscricaoMenu.add(inscricaoCadastrarMenuItem);
+		inscricaoMenu.add(inscricaoListarMenuItem);
+		
+		inscricaoCadastrarMenuItem.addActionListener(e -> {
+			InscricaoView inscricaoView = new InscricaoView();
+			inscricaoView.setVisible(true);
+		});
+		
+		menuBar.add(inscricaoMenu);
+		
+		// Fim Inscrições
 	}
 
 	public static void main(String[] args) {

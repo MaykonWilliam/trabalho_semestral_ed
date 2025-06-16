@@ -3,12 +3,12 @@ package domain.entities;
 import domain.interfaces.IEntity;
 
 public class Inscricao  implements IEntity {
-	private int codigo;
-	private int codigo_disciplina;
+	private String codigo;
+	private String codigo_disciplina;
 	private String cpf_professor;
 	private String status;
 
-	public Inscricao(int codigo, int codigo_disciplina, String cpf_professor, String status) {
+	public Inscricao(String codigo, String codigo_disciplina, String cpf_professor, String status) {
 		this.codigo = codigo;
 		this.codigo_disciplina = codigo_disciplina;
 		this.cpf_professor = cpf_professor;
@@ -17,11 +17,11 @@ public class Inscricao  implements IEntity {
 	
 	
 	
-	public int getCodigo() {
+	public String getCodigo() {
 		return this.codigo;
 	}
 	
-	public int getCodigoDisciplina() {
+	public String getCodigoDisciplina() {
 		return this.codigo_disciplina;
 	}
 	
@@ -38,11 +38,11 @@ public class Inscricao  implements IEntity {
 		return this.codigo;
 	}
 	
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
-	public void setCodigo_disciplina(int codigo_disciplina) {
+	public void setCodigo_disciplina(String codigo_disciplina) {
 		this.codigo_disciplina = codigo_disciplina;
 	}
 

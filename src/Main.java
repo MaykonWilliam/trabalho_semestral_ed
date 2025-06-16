@@ -30,7 +30,7 @@ public class Main {
 	}
 
 	private static void disciplinaTeste() throws Exception {
-		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
+		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
 		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas", 1);
 		repository.save(disciplina);
 
@@ -40,7 +40,7 @@ public class Main {
 
 		Random rnd = new Random();
 		StringBuilder resultado = new StringBuilder();
-		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricao.csv");
+		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
 		Inscricao inscricao;
 
 		// CREATE
@@ -54,7 +54,7 @@ public class Main {
 			}
 
 			String cpf = resultado.toString();
-			inscricao = new Inscricao(i, i + 100, mask.valueToString(cpf), "pendente");
+			inscricao = new Inscricao(Integer.toString(i), Integer.toString(i) + 100, mask.valueToString(cpf), "pendente");
 			repository.save(inscricao);
 		}
 
