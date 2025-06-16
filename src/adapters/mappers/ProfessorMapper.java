@@ -5,7 +5,7 @@ import domain.entities.Professor;
 public class ProfessorMapper {
 	static public String toString(Professor entity) {
 
-		return entity.getCpf() + ";" + entity.getNomeProfessor() + ";" + entity.getAreaConhecimento() + ";" + entity.getPontuacao();
+		return entity.getCpf() + ";" + entity.getNome() + ";" + entity.getAreaConhecimento() + ";" + entity.getPontuacao();
 	}
 
 	static public Professor toEntity(String record) {

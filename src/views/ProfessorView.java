@@ -229,7 +229,7 @@ public class ProfessorView extends JFrame {
 
 	private void loadData() {
 		txtCPF.setText(professor.getCpf());
-		txtNomeProfessor.setText(professor.getNomeProfessor());
+		txtNomeProfessor.setText(professor.getNome());
 		txtAreaConhecimento.setText(professor.getAreaConhecimento());
 		txtPontuacao.setText(Integer.toString(professor.getPontuacao()));
 	}
