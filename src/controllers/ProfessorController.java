@@ -1,12 +1,13 @@
 package controllers;
 
 import adapters.database.csv.ProfessorCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Professor;
 import utils.List;
 
 public class ProfessorController {
 
-	private ProfessorCSVRepositoryAdapter repository = new ProfessorCSVRepositoryAdapter("professor.csv");
+	private ProfessorCSVRepositoryAdapter repository = new ProfessorCSVRepositoryAdapter(CSVFiles.PROFESSOR);
 
 	public ProfessorController() {
 		super();
@@ -21,25 +22,43 @@ public class ProfessorController {
 		}
 	}
 
-	public ValidationResponse validForm(String nome, String area) throws Exception {
+	public ValidationResponse validForm(String cpf, String nome, String area, String pontuacao) throws Exception {
 
 		boolean isValid = true;
 		List<String> listaErros = new List<String>();
 
-		if (nome == null || nome.isEmpty()) {
+		if (cpf == null || cpf.isEmpty()) {
 			if (listaErros.isEmpty()) {
-				listaErros.addFirst("Nome inválido.");
+				listaErros.addFirst("CPF inválido.");
 			} else {
-				listaErros.addLast("Nome inválido.");
+				listaErros.addLast("CPF inválido.");
 			}
 			isValid = false;
 		}
 
-		if (nome == null || area.isEmpty()) {
+		if (nome == null || nome.isEmpty()) {
 			if (listaErros.isEmpty()) {
-				listaErros.addFirst("Área inválido.");
+				listaErros.addFirst("Nome do Professor inválido.");
 			} else {
-				listaErros.addLast("Área inválido.");
+				listaErros.addLast("Nome do Professor inválido.");
+			}
+			isValid = false;
+		}
+
+		if (area == null || area.isEmpty()) {
+			if (listaErros.isEmpty()) {
+				listaErros.addFirst("Área de Conhecimento inválida.");
+			} else {
+				listaErros.addLast("Área de Conhecimento inválida.");
+			}
+			isValid = false;
+		}
+
+		if (pontuacao == null || pontuacao.isEmpty()) {
+			if (listaErros.isEmpty()) {
+				listaErros.addFirst("Pontuação inválida.");
+			} else {
+				listaErros.addLast("Pontuação inválida.");
 			}
 			isValid = false;
 		}
@@ -64,8 +83,8 @@ public class ProfessorController {
 		return response;
 	}
 
-	public Professor show(int codigo) throws Exception {
-		return repository.show(codigo);
+	public Professor show(String cpf) throws Exception {
+		return repository.show(cpf);
 	}
 
 	public Professor save(String cpf, String nomeProfessor, String areaConhecimento, int pontuacao) throws Exception {

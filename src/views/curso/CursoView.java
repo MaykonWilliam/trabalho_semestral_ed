@@ -1,4 +1,4 @@
-package views.Curso;
+package views.curso;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

@@ -1,12 +1,13 @@
 package controllers;
 
 import adapters.database.csv.InscricaoCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Inscricao;
 import utils.List;
 
 public class InscricaoController {
 
-	private InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
+	private InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter(CSVFiles.INSCRICAO);
 
 	public InscricaoController() {
 		super();
@@ -68,7 +69,7 @@ public class InscricaoController {
 		return repository.show(codigo);
 	}
 
-	public Inscricao save(int codigo, int codigo_disciplina, String cpf_professor, String status) throws Exception {
+	public Inscricao save(String codigo, String codigo_disciplina, String cpf_professor, String status) throws Exception {
 		Inscricao record = new Inscricao(codigo, codigo_disciplina, cpf_professor, status);
 		repository.save(record);
 		return record;

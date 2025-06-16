@@ -1,4 +1,4 @@
-package views.Curso;
+package views.disciplina;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,8 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import controllers.CursoController;
-import domain.entities.Curso;
+import controllers.DisciplinaController;
+import domain.entities.Disciplina;
 import utils.List;
 
 import javax.swing.JTable;
@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class CursoListView extends JFrame {
+public class DisciplinaListView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,13 +36,13 @@ public class CursoListView extends JFrame {
 	private JTable table;
 	private DefaultTableModel tableModel;
 
-	CursoController controller = new CursoController();
-	List<Curso> list;
+	DisciplinaController controller = new DisciplinaController();
+	List<Disciplina> list;
 
 	private JTextField textSearch;
 	private TableRowSorter<DefaultTableModel> sorter;
 
-	public CursoListView() {
+	public DisciplinaListView() {
 
 		initializeComponent();
 
@@ -88,7 +88,7 @@ public class CursoListView extends JFrame {
 				searchRecords();
 			}
 		});
-		btnSearch.setIcon(new ImageIcon(CursoListView.class.getResource("/resources/icons/search.png")));
+		btnSearch.setIcon(new ImageIcon(DisciplinaListView.class.getResource("/resources/icons/search.png")));
 		btnSearch.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSearch.setEnabled(true);
 		btnSearch.setBounds(775, 11, 105, 45);
@@ -112,7 +112,7 @@ public class CursoListView extends JFrame {
 
 	@SuppressWarnings("serial")
 	private void createTable() {
-		String[] columns = { "Código", "Nome", "Área de Conhecimento" };
+		String[] columns = { "Código", "Nome", "Dia da Semana", "Horario Inicial", "Carga Horaria Diaria", "Curos" };
 
 		tableModel = new DefaultTableModel(columns, 0) {
 			@Override
@@ -145,7 +145,7 @@ public class CursoListView extends JFrame {
 				showRecordPage(null);
 			}
 		});
-		btnNew.setIcon(new ImageIcon(CursoListView.class.getResource("/resources/icons/plus.png")));
+		btnNew.setIcon(new ImageIcon(DisciplinaListView.class.getResource("/resources/icons/plus.png")));
 		btnNew.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnNew.setEnabled(true);
 		btnNew.setBounds(616, 366, 264, 35);
@@ -167,10 +167,10 @@ public class CursoListView extends JFrame {
 
 		list = controller.getAll();
 		for (int i = 0; i < list.size(); i++) {
-			Curso item;
+			Disciplina item;
 			try {
 				item = list.get(i);
-				Object[] row = { item.getCodigo(), item.getNome(), item.getArea() };
+				Object[] row = { item.getCodigo(), item.getNome(), item.getDiaSemana(), item.getHorarioInicial(), item.getHorasDiarias(), item.getCodigoCurso() };
 				tableModel.addRow(row);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Erro ao carregar dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -194,10 +194,10 @@ public class CursoListView extends JFrame {
 							int modelRowIndex = table.convertRowIndexToModel(selectedRow);
 
 							if (modelRowIndex >= 0 && modelRowIndex < list.size()) {
-								Curso cursoSelecionado = list.get(modelRowIndex);
+								Disciplina disciplinaSelecionado = list.get(modelRowIndex);
 
-								if (cursoSelecionado != null) {
-									showRecordPage(cursoSelecionado);
+								if (disciplinaSelecionado != null) {
+									showRecordPage(disciplinaSelecionado);
 								}
 							}
 						}
@@ -210,15 +210,15 @@ public class CursoListView extends JFrame {
 		});
 	}
 
-	private void showRecordPage(Curso curso) {
+	private void showRecordPage(Disciplina disciplina) {
 		try {
-			// OPÇÃO 1: Passando o curso no construtor
-			CursoView cursoView = new CursoView(curso);
-			cursoView.setVisible(true);
+
+			DisciplinaView disciplinaView = new DisciplinaView(disciplina);
+			disciplinaView.setVisible(true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Erro ao abrir curso: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Erro ao abrir disciplina: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
