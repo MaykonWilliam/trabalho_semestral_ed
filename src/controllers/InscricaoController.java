@@ -68,7 +68,7 @@ public class InscricaoController {
 		return repository.show(codigo);
 	}
 
-	public Inscricao save(int codigo, int codigo_disciplina, String cpf_professor, String status) throws Exception {
+	public Inscricao save(String codigo, String codigo_disciplina, String cpf_professor, String status) throws Exception {
 		Inscricao record = new Inscricao(codigo, codigo_disciplina, cpf_professor, status);
 		repository.save(record);
 		return record;
