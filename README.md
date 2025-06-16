@@ -51,7 +51,8 @@ do sistema.
 
 🔐 **Acesso ao Sistema** 
 
-**RF01** – O sistema deve permitir acesso apenas a funcionários cadastrados. 
+**RF01** – O sistema deve permitir acesso apenas a funcionários cadastrados. Usuário: admin
+senha: admin
 
  
 
