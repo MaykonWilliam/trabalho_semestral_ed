@@ -14,7 +14,7 @@ public class CursoCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Curso> i
 
 	public CursoCSVRepositoryAdapter(String filePath) {
 		super(filePath, CursoMapper::toString, CursoMapper::toEntity);
-		this.disciplinaCSVRepository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
+		this.disciplinaCSVRepository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
 	}
 
 	@Override

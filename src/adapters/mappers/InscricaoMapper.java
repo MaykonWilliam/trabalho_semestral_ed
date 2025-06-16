@@ -12,8 +12,8 @@ public class InscricaoMapper{
 	static public Inscricao toEntity(String record) {
 		String[] data = record.split(";");
 		
-		int codigo = Integer.parseInt(data[0]);
-		int codigo_disciplina = Integer.parseInt(data[1]);
+		String codigo = data[0];
+		String codigo_disciplina = data[1];
 		String cpf_professor = data[2];
 		String status = data[3];
 		
