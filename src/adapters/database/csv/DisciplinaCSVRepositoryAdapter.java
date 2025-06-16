@@ -2,7 +2,6 @@ package adapters.database.csv;
 
 import adapters.mappers.DisciplinaMapper;
 import domain.entities.Disciplina;
-import domain.repositories.IBaseRepository;
 import domain.repositories.IDisciplinaRepository;
 
 public class DisciplinaCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Disciplina> implements IDisciplinaRepository {
