@@ -11,6 +11,9 @@ public class Inscricao implements IEntity, IHasOne {
 	private String cpf_professor;
 	private String status;
 
+ 	public static final String ATIVO = "ATIVO";
+ 	public static final String INATIVO = "INATIVO";
+	 
 	private final OneToOneRelationship<Professor> professorRelationship;
 	private final OneToOneRelationship<Disciplina> disciplinaRelationship;
 
@@ -87,12 +90,26 @@ public class Inscricao implements IEntity, IHasOne {
 
 	@Override
 	public List<OneToOneRelationship<?>> getOneToOneRelationships() throws Exception {
-		
+
 		List<OneToOneRelationship<?>> relationships = new List<>();
-		
-		
+
 		relationships.addLast(professorRelationship);
 		relationships.addLast(disciplinaRelationship);
 		return relationships;
+	}
+
+	@Override
+	public int hashCode() {
+
+		double value;
+		if (this.getPrimaryKey() != null && !((String) this.getPrimaryKey()).isEmpty()) {
+			value = (double) ((String) this.getPrimaryKey()).charAt(0);
+		} else {
+			value = 0.0;
+		}
+
+		double sqrt2 = Math.sqrt(2);
+		double result = (5 * sqrt2 * value) % 1;
+		return (int) (1000 * result);
 	}
 }

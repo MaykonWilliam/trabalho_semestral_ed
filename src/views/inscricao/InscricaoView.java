@@ -145,7 +145,7 @@ public class InscricaoView extends JFrame {
 		lblStatus.setBounds(10, 200, 200, 20);
 		getContentPane().add(lblStatus);
 
-		String[] status = { "Ativo", "Inativo" };
+		String[] status = { Inscricao.ATIVO, Inscricao.INATIVO };
 
 		comboStatus = new JComboBox<String>(status);
 		comboStatus.setBounds(10, 220, 540, 25);
