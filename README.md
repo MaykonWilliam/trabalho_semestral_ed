@@ -137,14 +137,10 @@ Algoritmo de ordenação implementado manualmente, sem uso de bibliotecas intern
 ---
 
 ## 📦 Diagrama de Classes
-<img width="930px" src="./docs/image.jpeg"/>
+<img width="930px" src="./docs/diagrama-classes.jpg"/>
 
 ---
 
-## 🧩 Diagrama de Objetos
-<img width="80px" src="./docs/bouncing-circles.svg"/>
-
----
 
 ## 💻 Tecnologias Utilizadas
 
