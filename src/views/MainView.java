@@ -22,18 +22,16 @@ public class MainView extends JFrame {
 		setTitle("Sistema Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		setResizable(true);
 		setMinimumSize(new Dimension(800, 600));
 
-		// Carrega a imagem como plano de fundo
 		JPanel backgroundPanel = new BackgroundPanel("/resources/images/background.png");
 		backgroundPanel.setLayout(new BorderLayout());
 		setContentPane(backgroundPanel);
 
-		// Menu
 		JMenuBar menuBar = new JMenuBar();
 
-		// Início Professor
 		JMenuItem professorCadastrarMenuItem = new JMenuItem("Cadastrar Novo Professor");
 		JMenuItem professorListarMenuItem = new JMenuItem("Listar Professores");
 
@@ -46,11 +44,13 @@ public class MainView extends JFrame {
 			professorView.setVisible(true);
 		});
 
+		professorListarMenuItem.addActionListener(e -> {
+			ProfessorListView professorListView = new ProfessorListView();
+			professorListView.setVisible(true);
+		});
+
 		menuBar.add(professorMenu);
 
-		// Fim Professor
-
-		// Cursos
 		JMenuItem cursoCadastrarMenuItem = new JMenuItem("Cadastrar Novo Curso");
 		JMenuItem cursoListarMenuItem = new JMenuItem("Listar Cursos");
 
@@ -71,7 +71,6 @@ public class MainView extends JFrame {
 		menuBar.add(cursoMenu);
 		setJMenuBar(menuBar);
 
-		// Início Disciplina
 		JMenuItem disciplinaCadastrarMenuItem = new JMenuItem("Cadastrar Nova Disciplina");
 		JMenuItem disciplinaListarMenuItem = new JMenuItem("Listar Disciplinas");
 
@@ -80,13 +79,16 @@ public class MainView extends JFrame {
 		disciplinaMenu.add(disciplinaListarMenuItem);
 
 		disciplinaCadastrarMenuItem.addActionListener(e -> {
-			ProfessorView professorView = new ProfessorView();
-			professorView.setVisible(true);
+			DisciplinaView disciplinaView = new DisciplinaView();
+			disciplinaView.setVisible(true);
+		});
+
+		disciplinaListarMenuItem.addActionListener(e -> {
+			DisciplinaListView disciplinaListView = new DisciplinaListView();
+			disciplinaListView.setVisible(true);
 		});
 
 		menuBar.add(disciplinaMenu);
-
-		// Fim Disciplina
 	}
 
 	public static void main(String[] args) {

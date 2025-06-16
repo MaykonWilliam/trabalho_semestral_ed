@@ -14,4 +14,5 @@ public class DisciplinaCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Dis
 	protected BaseCSVRepositoryAdapter<?> getRepositoryFor(Class<?> entityClass) {
 		return null;
 	}
+
 }
