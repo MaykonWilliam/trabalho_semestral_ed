@@ -43,7 +43,7 @@ do sistema.
 ---
 
 ## 📦 Diagrama de Classes
-<img width="80px" src="./docs/bouncing-circles.svg"/>
+<img width="80px" src="./docs/diagrama-de-classes.png"/>
 
 ---
 
