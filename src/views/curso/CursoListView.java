@@ -1,4 +1,4 @@
-package views;
+package views.curso;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,8 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import controllers.InscricaoController;
-import domain.entities.Inscricao;
+import controllers.CursoController;
+import domain.entities.Curso;
 import utils.List;
 
 import javax.swing.JTable;
@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class InscricaoListView extends JFrame {
+public class CursoListView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,13 +36,13 @@ public class InscricaoListView extends JFrame {
 	private JTable table;
 	private DefaultTableModel tableModel;
 
-	InscricaoController controller = new InscricaoController();
-	List<Inscricao> list;
+	CursoController controller = new CursoController();
+	List<Curso> list;
 
 	private JTextField textSearch;
 	private TableRowSorter<DefaultTableModel> sorter;
 
-	public InscricaoListView() {
+	public CursoListView() {
 
 		initializeComponent();
 
@@ -88,7 +88,7 @@ public class InscricaoListView extends JFrame {
 				searchRecords();
 			}
 		});
-		btnSearch.setIcon(new ImageIcon(InscricaoListView.class.getResource("/resources/icons/search.png")));
+		btnSearch.setIcon(new ImageIcon(CursoListView.class.getResource("/resources/icons/search.png")));
 		btnSearch.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSearch.setEnabled(true);
 		btnSearch.setBounds(775, 11, 105, 45);
@@ -139,13 +139,13 @@ public class InscricaoListView extends JFrame {
 		lblDigiteOTemo.setBounds(10, 11, 223, 20);
 		contentPane.add(lblDigiteOTemo);
 
-		JButton btnNew = new JButton("Adicionar Novo Registro");
+		JButton btnNew = new JButton("Adicionar Nota Registro");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showRecordPage(null);
 			}
 		});
-		btnNew.setIcon(new ImageIcon(InscricaoListView.class.getResource("/resources/icons/plus.png")));
+		btnNew.setIcon(new ImageIcon(CursoListView.class.getResource("/resources/icons/plus.png")));
 		btnNew.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnNew.setEnabled(true);
 		btnNew.setBounds(616, 366, 264, 35);
@@ -167,10 +167,10 @@ public class InscricaoListView extends JFrame {
 
 		list = controller.getAll();
 		for (int i = 0; i < list.size(); i++) {
-			Inscricao item;
+			Curso item;
 			try {
 				item = list.get(i);
-				Object[] row = { item.getCodigo(), item.getCodigo(), item.getCodigo(), item.getCodigo(), item.getCodigo(), item.getCodigo() };
+				Object[] row = { item.getCodigo(), item.getNome(), item.getArea() };
 				tableModel.addRow(row);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Erro ao carregar dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -194,10 +194,10 @@ public class InscricaoListView extends JFrame {
 							int modelRowIndex = table.convertRowIndexToModel(selectedRow);
 
 							if (modelRowIndex >= 0 && modelRowIndex < list.size()) {
-								Inscricao selectedRecord = list.get(modelRowIndex);
+								Curso cursoSelecionado = list.get(modelRowIndex);
 
-								if (selectedRecord != null) {
-									showRecordPage(selectedRecord);
+								if (cursoSelecionado != null) {
+									showRecordPage(cursoSelecionado);
 								}
 							}
 						}
@@ -210,15 +210,15 @@ public class InscricaoListView extends JFrame {
 		});
 	}
 
-	private void showRecordPage(Inscricao record) {
+	private void showRecordPage(Curso curso) {
 		try {
-
-			InscricaoView view = new InscricaoView();
-			view.setVisible(true);
+			// OPÇÃO 1: Passando o curso no construtor
+			CursoView cursoView = new CursoView(curso);
+			cursoView.setVisible(true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Erro ao visualizar o registro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Erro ao abrir curso: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

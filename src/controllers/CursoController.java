@@ -1,12 +1,13 @@
 package controllers;
 
 import adapters.database.csv.CursoCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Curso;
 import utils.List;
 
 public class CursoController {
 
-	private CursoCSVRepositoryAdapter repository = new CursoCSVRepositoryAdapter("cursos.csv");
+	private CursoCSVRepositoryAdapter repository = new CursoCSVRepositoryAdapter(CSVFiles.CURSO);
 
 	public CursoController() {
 		super();

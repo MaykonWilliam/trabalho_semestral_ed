@@ -1,4 +1,4 @@
-package views;
+package views.professor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +12,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import adapters.database.csv.ProfessorCSVRepositoryAdapter;
-import utils.List;
+import controllers.ProfessorController;
+import controllers.ValidationResponse;
+
 import domain.entities.Professor;
 
 public class ProfessorView extends JFrame {
@@ -32,13 +33,25 @@ public class ProfessorView extends JFrame {
 	private JButton btnSearch;
 	private JButton btnCancel;
 
-	private ProfessorCSVRepositoryAdapter repository;
+	private ProfessorController controller = new ProfessorController();
 	private Professor professor;
+
+	private static final String MSG_ERRO_VALIDACAO = "Erro ao validar o formulário: ";
+
+	public ProfessorView(Professor professor) {
+		initializeComponent();
+		this.professor = professor;
+		if (professor != null) {
+			loadData();
+		}
+	}
 
 	public ProfessorView() {
 
-		repository = new ProfessorCSVRepositoryAdapter("professor.csv");
+		initializeComponent();
+	}
 
+	private void initializeComponent() {
 		setTitle("Cadastro de Professor");
 		setSize(576, 480);
 		setLocationRelativeTo(null);
@@ -191,6 +204,7 @@ public class ProfessorView extends JFrame {
 
 	private void disableButtons() {
 		btnNew.setEnabled(true);
+		btnSearch.setEnabled(true);
 		btnEdit.setEnabled(true);
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(false);
@@ -199,6 +213,7 @@ public class ProfessorView extends JFrame {
 
 	private void enableButtons() {
 		btnNew.setEnabled(false);
+		btnSearch.setEnabled(false);
 		btnEdit.setEnabled(false);
 		btnSave.setEnabled(true);
 		btnDelete.setEnabled(true);
@@ -216,7 +231,7 @@ public class ProfessorView extends JFrame {
 	private void findByCPF() throws Exception {
 		String cpf = txtCPF.getText().trim();
 
-		Professor record = repository.show(cpf);
+		Professor record = controller.show(cpf);
 
 		if (record == null) {
 			JOptionPane.showMessageDialog(null, "Registro não encontrado.", getTitle(), JOptionPane.WARNING_MESSAGE);
@@ -236,71 +251,33 @@ public class ProfessorView extends JFrame {
 
 	private boolean validateForm() throws Exception {
 
-		boolean isValid = true;
-		List<String> listaErros = new List<String>();
-
 		String cpf = txtCPF.getText().trim();
 		String nome = txtNomeProfessor.getText().trim();
 		String area = txtAreaConhecimento.getText().trim();
 		String pontuacao = txtPontuacao.getText().trim();
 
-		if (cpf == null || cpf.isEmpty()) {
-			if(listaErros.isEmpty()) {
-				listaErros.addFirst("CPF inválido.");
-			} else {
-				listaErros.addLast("CPF inválido.");
+		if (nome.isEmpty() || area.isEmpty()) {
+			showWarningMessage("Todos os campos são obrigatórios.");
+			return false;
+		}
+
+		try {
+			ValidationResponse response = controller.validForm(cpf, nome, area, pontuacao);
+			if (!response.isValid) {
+				showWarningMessage(response.message);
 			}
-			isValid = false;
+			return response.isValid;
+		} catch (Exception e) {
+			showErrorMessage(MSG_ERRO_VALIDACAO + e.getMessage());
+			return false;
 		}
-
-		if (nome == null || nome.isEmpty()) {
-			if(listaErros.isEmpty()) {
-				listaErros.addFirst("Nome do Professor inválido.");
-			} else {
-				listaErros.addLast("Nome do Professor inválido.");
-			}
-			isValid = false;
-		}
-
-		if (area == null || area.isEmpty()) {
-			if(listaErros.isEmpty()) {
-				listaErros.addFirst("Área de Conhecimento inválida.");
-			} else {
-				listaErros.addLast("Área de Conhecimento inválida.");
-			}
-			isValid = false;
-		}
-
-		if (pontuacao == null || pontuacao.isEmpty()) {
-			if(listaErros.isEmpty()) {
-				listaErros.addFirst("Pontuação inválida.");
-			} else {
-				listaErros.addLast("Pontuação inválida.");
-			}
-			isValid = false;
-		}
-
-		StringBuffer messages = new StringBuffer();
-
-		for (int i = 0; i < listaErros.size(); i++) {
-			messages.append(listaErros.get(i));
-			messages.append("\n");
-		}
-
-		if (isValid == false) {
-
-			String errorMessage = "Corrija os erros abaixo para continuar:\n\n" + messages.toString();
-			JOptionPane.showMessageDialog(null, errorMessage, getTitle(), JOptionPane.WARNING_MESSAGE);
-		}
-
-		return isValid;
 	}
 
 	private void newAction() {
 		clearForm();
 		enableForm();
 		enableButtons();
-		txtNomeProfessor.requestFocusInWindow();
+		txtCPF.requestFocusInWindow();
 	}
 
 	private void editAction() {
@@ -319,12 +296,11 @@ public class ProfessorView extends JFrame {
 		if (validateForm()) {
 
 			if (professor == null) {
-				professor = new Professor(txtCPF.getText(), txtNomeProfessor.getText(), txtAreaConhecimento.getText(), Integer.parseInt(txtPontuacao.getText().trim()));
-				repository.save(professor);
+				professor = controller.save(txtCPF.getText(), txtNomeProfessor.getText(), txtAreaConhecimento.getText(), Integer.parseInt(txtPontuacao.getText().trim()));
 			} else {
 				professor.setNomeProfessor(txtNomeProfessor.getText());
 				professor.setAreaConhecimento(txtAreaConhecimento.getText());
-				repository.update(professor);
+				controller.update(professor);
 			}
 			txtCPF.setText(professor.getCpf());
 			txtCPF.requestFocusInWindow();
@@ -353,7 +329,7 @@ public class ProfessorView extends JFrame {
 		}
 
 		try {
-			repository.delete(professor);
+			controller.delete(professor);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -374,6 +350,14 @@ public class ProfessorView extends JFrame {
 		disableForm();
 		disableButtons();
 		txtCPF.requestFocusInWindow();
+	}
+
+	private void showErrorMessage(String message) {
+		JOptionPane.showMessageDialog(this, message, getTitle(), JOptionPane.ERROR_MESSAGE);
+	}
+
+	private void showWarningMessage(String message) {
+		JOptionPane.showMessageDialog(this, message, getTitle(), JOptionPane.WARNING_MESSAGE);
 	}
 
 }

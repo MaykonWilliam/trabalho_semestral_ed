@@ -10,8 +10,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import views.Curso.CursoListView;
-import views.Curso.CursoView;
+import views.curso.CursoListView;
+import views.curso.CursoView;
+import views.disciplina.DisciplinaListView;
+import views.disciplina.DisciplinaView;
+import views.inscricao.InscricaoListView;
+import views.inscricao.InscricaoView;
+import views.professor.ProfessorListView;
+import views.professor.ProfessorView;
 
 public class MainView extends JFrame {
 
@@ -69,7 +75,6 @@ public class MainView extends JFrame {
 		});
 
 		menuBar.add(cursoMenu);
-		setJMenuBar(menuBar);
 
 		JMenuItem disciplinaCadastrarMenuItem = new JMenuItem("Cadastrar Nova Disciplina");
 		JMenuItem disciplinaListarMenuItem = new JMenuItem("Listar Disciplinas");
@@ -89,6 +94,27 @@ public class MainView extends JFrame {
 		});
 
 		menuBar.add(disciplinaMenu);
+
+		JMenuItem incricaoCadastrarMenuItem = new JMenuItem("Cadastrar Nova Inscrição");
+		JMenuItem incricaoListarMenuItem = new JMenuItem("Listar Inscrição");
+
+		JMenu inscricaoMenu = new JMenu("Inscrições");
+		inscricaoMenu.add(incricaoCadastrarMenuItem);
+		inscricaoMenu.add(incricaoListarMenuItem);
+
+		incricaoCadastrarMenuItem.addActionListener(e -> {
+			InscricaoView inscricaoView = new InscricaoView();
+			inscricaoView.setVisible(true);
+		});
+
+		incricaoListarMenuItem.addActionListener(e -> {
+			InscricaoListView inscricaoListView = new InscricaoListView();
+			inscricaoListView.setVisible(true);
+		});
+
+		menuBar.add(inscricaoMenu);
+
+		setJMenuBar(menuBar);
 	}
 
 	public static void main(String[] args) {

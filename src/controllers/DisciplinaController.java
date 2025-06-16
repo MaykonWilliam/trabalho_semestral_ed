@@ -1,12 +1,16 @@
 package controllers;
 
+import adapters.database.csv.CursoCSVRepositoryAdapter;
 import adapters.database.csv.DisciplinaCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
+import domain.entities.Curso;
 import domain.entities.Disciplina;
 import utils.List;
 
 public class DisciplinaController {
 
-	private DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplina.csv");
+	private DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter(CSVFiles.DISCIPLINA);
+	private CursoCSVRepositoryAdapter repositoryCurso = new CursoCSVRepositoryAdapter(CSVFiles.CURSO);
 
 	public DisciplinaController() {
 		super();
@@ -19,6 +23,38 @@ public class DisciplinaController {
 		} catch (Exception e) {
 			return new List<Disciplina>();
 		}
+	}
+
+	public List<Curso> getAllCursos() {
+		try {
+			List<Curso> list = repositoryCurso.list();
+			return list;
+		} catch (Exception e) {
+			return new List<Curso>();
+		}
+	}
+
+	public Disciplina show(String codigo) throws Exception {
+		return repository.show(codigo);
+	}
+
+	public Curso showCurso(Object codigo) throws Exception {
+		return repositoryCurso.show(codigo);
+	}
+
+	public Disciplina save(String codigo, String nome, String diaSemana, String horarioInicial, String horasDiarias, Object codigoCurso) throws Exception {
+		Disciplina record = new Disciplina(codigo, nome, diaSemana, horarioInicial, horasDiarias, codigoCurso);
+		
+		repository.save(record);
+		return record;
+	}
+
+	public void update(Disciplina record) throws Exception {
+		repository.update(record);
+	}
+
+	public void delete(Disciplina record) throws Exception {
+		repository.delete(record);
 	}
 
 	public ValidationResponse validForm(String nome, String area) throws Exception {
@@ -62,23 +98,5 @@ public class DisciplinaController {
 		}
 
 		return response;
-	}
-
-	public Disciplina show(int codigo) throws Exception {
-		return repository.show(codigo);
-	}
-
-	public Disciplina save(String codigo, String nome, String diaSemana, String horarioInicial, String horasDiarias, Object codigoCurso) throws Exception {
-		Disciplina record = new Disciplina(codigo, nome, diaSemana, horarioInicial, horasDiarias, codigoCurso);
-		repository.save(record);
-		return record;
-	}
-
-	public void update(Disciplina record) throws Exception {
-		repository.update(record);
-	}
-
-	public void delete(Disciplina record) throws Exception {
-		repository.delete(record);
 	}
 }

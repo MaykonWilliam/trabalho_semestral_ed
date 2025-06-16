@@ -1,4 +1,4 @@
-package views;
+package views.inscricao;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import adapters.database.csv.DisciplinaCSVRepositoryAdapter;
 import adapters.database.csv.InscricaoCSVRepositoryAdapter;
 import adapters.database.csv.ProfessorCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Disciplina;
 import domain.entities.Inscricao;
 import domain.entities.Professor;
@@ -43,12 +44,23 @@ public class InscricaoView extends JFrame {
 	private List<Disciplina> disciplinas;
 	private List<Professor> professores;
 
-	public InscricaoView() {
+	public InscricaoView(Inscricao inscricao) {
+		initializeComponent();
+		this.inscricao = inscricao;
+		if (inscricao != null) {
+			loadData();
+		}
+	}
 
-		repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
-		disciplinaRepository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
-		professorRepository = new ProfessorCSVRepositoryAdapter("professor.csv");
-		
+	public InscricaoView() {
+		initializeComponent();
+	}
+
+	private void initializeComponent() {
+		repository = new InscricaoCSVRepositoryAdapter(CSVFiles.INSCRICAO);
+		disciplinaRepository = new DisciplinaCSVRepositoryAdapter(CSVFiles.DISCIPLINA);
+		professorRepository = new ProfessorCSVRepositoryAdapter(CSVFiles.PROFESSOR);
+
 		try {
 			disciplinas = disciplinaRepository.list();
 			professores = professorRepository.list();
@@ -96,10 +108,10 @@ public class InscricaoView extends JFrame {
 		JLabel lblDisciplina = new JLabel("Disciplina");
 		lblDisciplina.setBounds(10, 80, 200, 20);
 		getContentPane().add(lblDisciplina);
-		
+
 		String[] nomeDisciplina = new String[disciplinas.size()];
-		
-		for(int i = 0; i < disciplinas.size(); i++) {
+
+		for (int i = 0; i < disciplinas.size(); i++) {
 			try {
 				nomeDisciplina[i] = disciplinas.get(i).getNome();
 			} catch (Exception e1) {
@@ -110,16 +122,16 @@ public class InscricaoView extends JFrame {
 		comboDisciplina = new JComboBox<String>(nomeDisciplina);
 		comboDisciplina.setBounds(10, 100, 540, 25);
 		getContentPane().add(comboDisciplina);
-		
+
 		JLabel lblProfessor = new JLabel("Professor");
 		lblProfessor.setBounds(10, 140, 200, 20);
 		getContentPane().add(lblProfessor);
-		
+
 		String[] nomeProfessor = new String[professores.size()];
-		
-		for(int i = 0; i < professores.size(); i++) {
+
+		for (int i = 0; i < professores.size(); i++) {
 			try {
-				nomeProfessor[i] = professores.get(i).getNomeProfessor();
+				nomeProfessor[i] = professores.get(i).getNome();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -128,19 +140,16 @@ public class InscricaoView extends JFrame {
 		comboProfessor = new JComboBox<String>(nomeProfessor);
 		comboProfessor.setBounds(10, 160, 540, 25);
 		getContentPane().add(comboProfessor);
-		
+
 		JLabel lblStatus = new JLabel("Status");
 		lblStatus.setBounds(10, 200, 200, 20);
 		getContentPane().add(lblStatus);
-		
-		String[] status = {
-	            "Ativo", "Inativo"
-	        };
+
+		String[] status = { "Ativo", "Inativo" };
 
 		comboStatus = new JComboBox<String>(status);
 		comboStatus.setBounds(10, 220, 540, 25);
 		getContentPane().add(comboStatus);
-
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 348, 540, 2);
@@ -269,18 +278,18 @@ public class InscricaoView extends JFrame {
 	private void loadData() {
 		txtCodInscricao.setText(inscricao.getCodigo());
 		comboStatus.setSelectedItem(inscricao.getStatus());
-		
+
 		Disciplina disciplina = null;
 		Professor professor = null;
-		
+
 		try {
-			disciplina = disciplinaRepository.show(inscricao.getCodigoDisciplina());
-			professor = professorRepository.show(inscricao.getCpfProfessor());
+			disciplina = disciplinaRepository.show(inscricao.getCodigo_disciplina());
+			professor = professorRepository.show(inscricao.getCpf_professor());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		comboDisciplina.setSelectedItem(disciplina.getNome());
-		comboProfessor.setSelectedItem(professor.getNomeProfessor());
+		comboProfessor.setSelectedItem(professor.getNome());
 	}
 
 	private boolean validateForm() throws Exception {
@@ -291,14 +300,14 @@ public class InscricaoView extends JFrame {
 		String codInscricao = txtCodInscricao.getText().trim();
 
 		if (codInscricao == null || codInscricao.isEmpty()) {
-			if(listaErros.isEmpty()) {
+			if (listaErros.isEmpty()) {
 				listaErros.addFirst("Código da Inscrição inválido.");
 			} else {
 				listaErros.addLast("Código da Inscrição inválido.");
 			}
 			isValid = false;
 		}
-		
+
 		StringBuffer messages = new StringBuffer();
 
 		for (int i = 0; i < listaErros.size(); i++) {
@@ -339,19 +348,19 @@ public class InscricaoView extends JFrame {
 
 	private void saveAction() throws Exception {
 		if (validateForm()) {
-			
+
 			String codDisciplina = null;
 			String cpfProfessor = null;
-			
-			for(int i = 0; i < disciplinas.size(); i++) {
-				if(disciplinas.get(i).getNome().equalsIgnoreCase((String) comboDisciplina.getSelectedItem())) {
+
+			for (int i = 0; i < disciplinas.size(); i++) {
+				if (disciplinas.get(i).getNome().equalsIgnoreCase((String) comboDisciplina.getSelectedItem())) {
 					codDisciplina = disciplinas.get(i).getCodigo();
 					break;
 				}
 			}
-			
-			for(int i = 0; i < professores.size(); i++) {
-				if(professores.get(i).getNomeProfessor().equalsIgnoreCase((String) comboProfessor.getSelectedItem())) {
+
+			for (int i = 0; i < professores.size(); i++) {
+				if (professores.get(i).getNome().equalsIgnoreCase((String) comboProfessor.getSelectedItem())) {
 					cpfProfessor = professores.get(i).getCpf();
 					break;
 				}

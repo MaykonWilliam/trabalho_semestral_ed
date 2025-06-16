@@ -1,4 +1,4 @@
-package views;
+package views.disciplina;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,15 +13,13 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import adapters.database.csv.CursoCSVRepositoryAdapter;
-import adapters.database.csv.DisciplinaCSVRepositoryAdapter;
+import controllers.DisciplinaController;
 import domain.entities.Curso;
 import domain.entities.Disciplina;
 import utils.List;
 
+@SuppressWarnings("serial")
 public class DisciplinaView extends JFrame {
-
-	private static final long serialVersionUID = 3L;
 
 	private JTextField txtCodDisciplina;
 	private JTextField txtNomeDisciplina;
@@ -37,18 +35,28 @@ public class DisciplinaView extends JFrame {
 	private JButton btnSearch;
 	private JButton btnCancel;
 
-	private DisciplinaCSVRepositoryAdapter repository;
-	private CursoCSVRepositoryAdapter repositoryCursos;
 	private Disciplina disciplina;
 	private List<Curso> cursos;
 
+	private DisciplinaController controller = new DisciplinaController();
+
+	public DisciplinaView(Disciplina disciplina) {
+
+		initializeComponent();
+		this.disciplina = disciplina;
+		if (disciplina != null) {
+			loadData();
+		}
+	}
+
 	public DisciplinaView() {
 
-		repository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
-		repositoryCursos = new CursoCSVRepositoryAdapter("cursos.csv");
-		
+		initializeComponent();
+	}
+
+	private void initializeComponent() {
 		try {
-			cursos = repositoryCursos.list();
+			cursos = controller.getAllCursos();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,11 +109,8 @@ public class DisciplinaView extends JFrame {
 		JLabel lbldiaSemana = new JLabel("Dia da semana");
 		lbldiaSemana.setBounds(10, 130, 200, 20);
 		getContentPane().add(lbldiaSemana);
-		
-		String[] dias = {
-	            "Domingo", "Segunda-feira", "Terça-feira", 
-	            "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
-	        };
+
+		String[] dias = { "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado" };
 
 		comboDia = new JComboBox<String>(dias);
 		comboDia.setBounds(10, 150, 540, 25);
@@ -118,7 +123,7 @@ public class DisciplinaView extends JFrame {
 		txtHoraInicial = new JTextField();
 		txtHoraInicial.setBounds(10, 211, 540, 25);
 		getContentPane().add(txtHoraInicial);
-		
+
 		JLabel lblHoradiaria = new JLabel("Horas Diárias");
 		lblHoradiaria.setBounds(10, 245, 100, 20);
 		getContentPane().add(lblHoradiaria);
@@ -126,14 +131,14 @@ public class DisciplinaView extends JFrame {
 		txtHoraDiaria = new JTextField();
 		txtHoraDiaria.setBounds(10, 265, 540, 25);
 		getContentPane().add(txtHoraDiaria);
-		
+
 		JLabel lblCurso = new JLabel("Curso da Disciplina");
 		lblCurso.setBounds(10, 295, 200, 20);
 		getContentPane().add(lblCurso);
-		
+
 		String[] nomeCurso = new String[cursos.size()];
-		
-		for(int i = 0; i < cursos.size(); i++) {
+
+		for (int i = 0; i < cursos.size(); i++) {
 			try {
 				nomeCurso[i] = cursos.get(i).getNome();
 			} catch (Exception e1) {
@@ -240,6 +245,7 @@ public class DisciplinaView extends JFrame {
 
 	private void disableButtons() {
 		btnNew.setEnabled(true);
+		btnSearch.setEnabled(true);
 		btnEdit.setEnabled(true);
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(false);
@@ -248,6 +254,7 @@ public class DisciplinaView extends JFrame {
 
 	private void enableButtons() {
 		btnNew.setEnabled(false);
+		btnSearch.setEnabled(false);
 		btnEdit.setEnabled(false);
 		btnSave.setEnabled(true);
 		btnDelete.setEnabled(true);
@@ -265,7 +272,7 @@ public class DisciplinaView extends JFrame {
 	private void findByCodigo() throws Exception {
 		String codigo = txtCodDisciplina.getText().trim();
 
-		Disciplina record = repository.show(codigo);
+		Disciplina record = controller.show(codigo);
 
 		if (record == null) {
 			JOptionPane.showMessageDialog(null, "Registro não encontrado.", getTitle(), JOptionPane.WARNING_MESSAGE);
@@ -282,10 +289,10 @@ public class DisciplinaView extends JFrame {
 		txtHoraInicial.setText(disciplina.getHorarioInicial());
 		comboDia.setSelectedItem(disciplina.getDiaSemana());
 		txtHoraDiaria.setText(disciplina.getHorasDiarias());
-		
+
 		Curso curso = null;
 		try {
-			curso = repositoryCursos.show(disciplina.getCodigoCurso());
+			curso = controller.showCurso(disciplina.getCodigoCurso());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -303,7 +310,7 @@ public class DisciplinaView extends JFrame {
 		String horaDiaria = txtHoraDiaria.getText().trim();
 
 		if (codDisciplina == null || codDisciplina.isEmpty()) {
-			if(listaErros.isEmpty()) {
+			if (listaErros.isEmpty()) {
 				listaErros.addFirst("Código da Disciplina inválido.");
 			} else {
 				listaErros.addLast("Código da Disciplina inválido.");
@@ -312,7 +319,7 @@ public class DisciplinaView extends JFrame {
 		}
 
 		if (nomeDisciplina == null || nomeDisciplina.isEmpty()) {
-			if(listaErros.isEmpty()) {
+			if (listaErros.isEmpty()) {
 				listaErros.addFirst("Nome da Disciplina inválido.");
 			} else {
 				listaErros.addLast("Nome da Disciplina inválido.");
@@ -321,7 +328,7 @@ public class DisciplinaView extends JFrame {
 		}
 
 		if (horaInicial == null || horaInicial.isEmpty()) {
-			if(listaErros.isEmpty()) {
+			if (listaErros.isEmpty()) {
 				listaErros.addFirst("Hora inicial inválida.");
 			} else {
 				listaErros.addLast("Hora inicial inválida.");
@@ -330,7 +337,7 @@ public class DisciplinaView extends JFrame {
 		}
 
 		if (horaDiaria == null || horaDiaria.isEmpty()) {
-			if(listaErros.isEmpty()) {
+			if (listaErros.isEmpty()) {
 				listaErros.addFirst("Horas Diárias inválidas.");
 			} else {
 				listaErros.addLast("Horas Diárias inválidas.");
@@ -358,7 +365,7 @@ public class DisciplinaView extends JFrame {
 		clearForm();
 		enableForm();
 		enableButtons();
-		txtNomeDisciplina.requestFocusInWindow();
+		txtCodDisciplina.requestFocusInWindow();
 	}
 
 	private void editAction() {
@@ -375,26 +382,25 @@ public class DisciplinaView extends JFrame {
 
 	private void saveAction() throws Exception {
 		if (validateForm()) {
-			
+
 			int codCurso = 0;
-			
-			for(int i = 0; i < cursos.size(); i++) {
-				if(cursos.get(i).getNome().equalsIgnoreCase((String) comboCursos.getSelectedItem())) {
+
+			for (int i = 0; i < cursos.size(); i++) {
+				if (cursos.get(i).getNome().equalsIgnoreCase((String) comboCursos.getSelectedItem())) {
 					codCurso = cursos.get(i).getCodigo();
 					break;
 				}
 			}
 
 			if (disciplina == null) {
-				disciplina = new Disciplina(txtCodDisciplina.getText(), txtNomeDisciplina.getText(), (String) comboDia.getSelectedItem(), txtHoraInicial.getText(), txtHoraDiaria.getText(), codCurso);
-				repository.save(disciplina);
+				disciplina = controller.save(txtCodDisciplina.getText(), txtNomeDisciplina.getText(), (String) comboDia.getSelectedItem(), txtHoraInicial.getText(), txtHoraDiaria.getText(), codCurso);
 			} else {
 				disciplina.setNome(txtNomeDisciplina.getText());
 				disciplina.setDiaSemana((String) comboDia.getSelectedItem());
 				disciplina.setHorarioInicial(txtHoraInicial.getText());
 				disciplina.setHorasDiarias(txtHoraDiaria.getText());
 				disciplina.setCodigoCurso(comboCursos.getSelectedItem());
-				repository.update(disciplina);
+				controller.update(disciplina);
 			}
 			txtCodDisciplina.setText(disciplina.getCodigo());
 			txtCodDisciplina.requestFocusInWindow();
@@ -423,7 +429,7 @@ public class DisciplinaView extends JFrame {
 		}
 
 		try {
-			repository.delete(disciplina);
+			controller.delete(disciplina);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

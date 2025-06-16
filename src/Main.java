@@ -6,6 +6,7 @@ import javax.swing.text.MaskFormatter;
 import adapters.database.csv.CursoCSVRepositoryAdapter;
 import adapters.database.csv.DisciplinaCSVRepositoryAdapter;
 import adapters.database.csv.InscricaoCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Curso;
 import domain.entities.Disciplina;
 import domain.entities.Inscricao;
@@ -19,9 +20,9 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new MainView().setVisible(true);
+		 new MainView().setVisible(true);
 		// runAllTests();
-
+		
 	}
 
 	@SuppressWarnings("unused")
@@ -31,7 +32,7 @@ public class Main {
 	}
 
 	private static void disciplinaTeste() throws Exception {
-		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
+		DisciplinaCSVRepositoryAdapter repository = new DisciplinaCSVRepositoryAdapter(CSVFiles.DISCIPLINA);
 		Disciplina disciplina = new Disciplina("4002", "S0II", "terça-feira", "19:20", "4 horas", 1);
 		repository.save(disciplina);
 
@@ -42,7 +43,7 @@ public class Main {
 
 		Random rnd = new Random();
 		StringBuilder resultado = new StringBuilder();
-		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
+		InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter(CSVFiles.INSCRICAO);
 		Inscricao inscricao;
 
 		// CREATE
@@ -97,7 +98,7 @@ public class Main {
 		System.out.println("_______________________________________");
 		System.out.println("_____________TESTE CURSO_____ _________");
 		System.out.println("_______________________________________");
-		CursoCSVRepositoryAdapter repository = new CursoCSVRepositoryAdapter("cursos.csv");
+		CursoCSVRepositoryAdapter repository = new CursoCSVRepositoryAdapter(CSVFiles.CURSO);
 
 		// CREATE
 		Curso curso = new Curso(1, "ADS", "T.I");
