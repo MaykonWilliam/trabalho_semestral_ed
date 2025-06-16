@@ -1,6 +1,8 @@
 
 import java.util.Random;
-import views.MainView;
+
+import views.LoginView;
+
 import javax.swing.text.MaskFormatter;
 
 import adapters.database.csv.CursoCSVRepositoryAdapter;
@@ -20,7 +22,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		 new MainView().setVisible(true);
+		 new LoginView().setVisible(true);
 		// runAllTests();
 		
 	}
