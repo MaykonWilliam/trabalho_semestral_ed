@@ -52,4 +52,19 @@ public class Professor implements IEntity {
 	public Object getPrimaryKey() {
 		return cpf;
 	}
+
+	@Override
+	public int hashCode() {
+
+		double value;
+		if (this.getPrimaryKey() != null && !((String) this.getPrimaryKey()).isEmpty()) {
+			value = (double) ((String) this.getPrimaryKey()).charAt(0);
+		} else {
+			value = 0.0;
+		}
+
+		double sqrt2 = Math.sqrt(2);
+		double result = (5 * sqrt2 * value) % 1;
+		return (int) (1000 * result);
+	}
 }

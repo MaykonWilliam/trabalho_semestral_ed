@@ -65,4 +65,13 @@ public class Curso implements IEntity, IHasMany<Disciplina> {
 	public String getForeignKeyFieldName() {
 		return "codigoCurso";
 	}
+
+	@Override
+	public int hashCode() {
+
+		double value = (double) this.getPrimaryKey();
+		double sqrt2 = Math.sqrt(2);
+		double result = (5 * sqrt2 * value) % 1;
+		return (int) (1000 * result);
+	}
 }
