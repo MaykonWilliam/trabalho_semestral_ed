@@ -1,5 +1,21 @@
 <!-- Documentação para criação do arquivo README.md -->
 <!-- https://docs.github.com/pt/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax -->
+
+
+## 🧑‍💻 Equipe
+
+- **Desenvolvedores/Alunos:**
+  - [Maykon Wlliam](https://github.com/MaykonWilliam)
+  - [Lucas Bezerra](https://github.com/LucasBMacedo)
+  - [André Oliveira Batista](https://github.com/AndreOliveiraBatista)
+  - [Vinicius de Souza Moreira](https://github.com/Vineee95)
+  
+- **Disciplina:** Estrutura de Dados - ED
+- **Professor:** [Leandro Colevati](https://github.com/lecolevati)
+- **Instituição:** FATEC Zona Leste - Análise e Desenvolvimento de Sistemas
+
+---
+
 # 📚 Trabalho Semestral ED - Gerenciamento de Docentes
 
 ## 🎯 Domínio da Aplicação
@@ -172,17 +188,5 @@ A estrutura segue os princípios da Clean Architecture, com separação clara en
 │<br>
 └── `Main.java` # Classe principal, ponto de entrada da aplicação<br>
 
----
 
 
-## 🧑‍💻 Equipe
-
-- **Desenvolvedores/Alunos:**
-  - [Maykon Wlliam](https://github.com/MaykonWilliam)
-  - [Lucas Bezerra](https://github.com/LucasBMacedo)
-  - [André Oliveira Batista](https://github.com/AndreOliveiraBatista)
-  - [Vinicius de Souza Moreira](https://github.com/Vineee95)
-  
-- **Disciplina:** Estrutura de Dados - ED
-- **Professor:** [Leandro Colevati](https://github.com/lecolevati)
-- **Instituição:** FATEC Zona Leste - Análise e Desenvolvimento de Sistemas
