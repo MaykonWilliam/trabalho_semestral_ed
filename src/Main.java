@@ -19,11 +19,12 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// new MainView().setVisible(true);
-		runAllTests();
+		new MainView().setVisible(true);
+		// runAllTests();
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void runAllTests() throws Exception {
 		cursoTeste();
 		inscricaoTeste();
@@ -36,6 +37,7 @@ public class Main {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void inscricaoTeste() throws Exception {
 
 		Random rnd = new Random();
@@ -83,6 +85,7 @@ public class Main {
 		// LIST
 		inscricoes = repository.list();
 		for (int i = 0; i < inscricoes.size(); i++) {
+
 			Inscricao inscricaoItem = inscricoes.get(i);
 
 		}
@@ -145,9 +148,9 @@ public class Main {
 			Curso cursoItem = cursos.get(i);
 			System.out.println(cursoItem.getNome());
 		}
-		
+
 		disciplinaTeste();
-		
+
 		curso = repository.show(1);
 		if (curso != null) {
 			List<Disciplina> disciplinasCurso = curso.getRelatedEntities();

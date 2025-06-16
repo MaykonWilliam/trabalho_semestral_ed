@@ -4,14 +4,14 @@ import domain.interfaces.IEntity;
 
 public class Professor implements IEntity {
 	private String cpf;
-	private String nomeProfessor;
+	private String nome;
 	private String areaConhecimento;
 	private int pontuacao;
 
-	public Professor(String cpf, String nomeProfessor, String areaConhecimento, int pontuacao) {
+	public Professor(String cpf, String nome, String areaConhecimento, int pontuacao) {
 		super();
 		this.cpf = cpf;
-		this.nomeProfessor = nomeProfessor;
+		this.nome = nome;
 		this.areaConhecimento = areaConhecimento;
 		this.pontuacao = pontuacao;
 	}
@@ -24,12 +24,12 @@ public class Professor implements IEntity {
 		this.cpf = cpf;
 	}
 
-	public String getNomeProfessor() {
-		return nomeProfessor;
+	public String getNome() {
+		return nome;
 	}
 
 	public void setNomeProfessor(String nomeProfessor) {
-		this.nomeProfessor = nomeProfessor;
+		this.nome = nomeProfessor;
 	}
 
 	public String getAreaConhecimento() {

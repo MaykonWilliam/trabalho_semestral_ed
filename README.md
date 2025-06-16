@@ -70,18 +70,15 @@ A estrutura segue os princípios da Clean Architecture, com separação clara en
 │ ├── `/entities` # Camada de Modelos<br>
 │ └── `/repositories` # Interfaces para persistência de dados<br>
 │<br>
-├── `/usecases` # Lógica de aplicação<br>
-│ └── `/` # Arquivos da aplicação<br>
-│<br>
 ├── `/adapters` # Camada de persistência e mapeamentos<br>
 │ ├── `/database` # Implementações das funcionalidades de persistencias<br>
 │ └── `/mappers` # Conversões de dados para objetos Java<br>
 │<br>
 ├── `/controllers` # Comunicação entre views e usecases<br>
 │<br>
+├── `/utils` # Classes Auxiliares (Lista,No, Hash,Etc.)<br>
+│<br>
 ├── `/views` # Interface com o usuário<br>
-│ ├── `/` # Arquivos de Interface gráfica<br>
-│ └── `/components` # Componentes reutilizáveis<br>
 │<br>
 └── `Main.java` # Classe principal, ponto de entrada da aplicação<br>
 

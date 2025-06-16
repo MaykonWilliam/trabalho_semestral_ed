@@ -125,6 +125,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 	}
 
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T show(Object entityCode) throws Exception {
 		List<T> list = this.list();
 
@@ -197,7 +198,9 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 					Object foreignKeyValue = getFieldValue(relatedEntity, foreignKeyField);
 
 					if (primaryKey.equals(foreignKeyValue)) {
-						filteredEntities.addLast((T) relatedEntity);
+						@SuppressWarnings("unchecked")
+						T castEntity = (T) relatedEntity;
+						filteredEntities.addLast(castEntity);
 					}
 				}
 
@@ -261,6 +264,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void deleteEntity(Object entity) throws Exception {
 		List<Object> list = (List<Object>) this.list();
 		Object entityCode = ((IEntity) entity).getPrimaryKey();
