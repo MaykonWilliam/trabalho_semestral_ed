@@ -1,7 +1,7 @@
 package adapters.database.csv;
 
 import adapters.mappers.CursoMapper;
-
+import domain.constants.CSVFiles;
 import domain.entities.Curso;
 import domain.entities.Disciplina;
 import domain.repositories.ICursoRepository;
@@ -10,11 +10,11 @@ import utils.List;
 
 public class CursoCSVRepositoryAdapter extends BaseCSVRepositoryAdapter<Curso> implements ICursoRepository {
 
-	private DisciplinaCSVRepositoryAdapter disciplinaCSVRepository;
+	private DisciplinaCSVRepositoryAdapter disciplinaCSVRepository = new DisciplinaCSVRepositoryAdapter(CSVFiles.DISCIPLINA);
 
 	public CursoCSVRepositoryAdapter(String filePath) {
 		super(filePath, CursoMapper::toString, CursoMapper::toEntity);
-		this.disciplinaCSVRepository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
+
 	}
 
 	@Override

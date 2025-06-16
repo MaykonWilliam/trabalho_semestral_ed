@@ -1,12 +1,13 @@
 package controllers;
 
 import adapters.database.csv.InscricaoCSVRepositoryAdapter;
+import domain.constants.CSVFiles;
 import domain.entities.Inscricao;
 import utils.List;
 
 public class InscricaoController {
 
-	private InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
+	private InscricaoCSVRepositoryAdapter repository = new InscricaoCSVRepositoryAdapter(CSVFiles.INSCRICAO);
 
 	public InscricaoController() {
 		super();

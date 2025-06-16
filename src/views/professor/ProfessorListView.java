@@ -1,4 +1,4 @@
-package views;
+package views.professor;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,8 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import controllers.DisciplinaController;
-import domain.entities.Disciplina;
+import controllers.ProfessorController;
+import domain.entities.Professor;
 import utils.List;
 
 import javax.swing.JTable;
@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class DisciplinaListView extends JFrame {
+public class ProfessorListView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,13 +36,13 @@ public class DisciplinaListView extends JFrame {
 	private JTable table;
 	private DefaultTableModel tableModel;
 
-	DisciplinaController controller = new DisciplinaController();
-	List<Disciplina> list;
+	ProfessorController controller = new ProfessorController();
+	List<Professor> list;
 
 	private JTextField textSearch;
 	private TableRowSorter<DefaultTableModel> sorter;
 
-	public DisciplinaListView() {
+	public ProfessorListView() {
 
 		initializeComponent();
 
@@ -58,7 +58,7 @@ public class DisciplinaListView extends JFrame {
 	private void setupWindowFocusListener() {
 		this.addWindowFocusListener(new WindowFocusListener() {
 			public void windowGainedFocus(WindowEvent e) {
-
+				textSearch.setText("");
 				sorter.setRowFilter(null);
 				loadData();
 			}
@@ -88,7 +88,7 @@ public class DisciplinaListView extends JFrame {
 				searchRecords();
 			}
 		});
-		btnSearch.setIcon(new ImageIcon(DisciplinaListView.class.getResource("/resources/icons/search.png")));
+		btnSearch.setIcon(new ImageIcon(ProfessorListView.class.getResource("/resources/icons/search.png")));
 		btnSearch.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSearch.setEnabled(true);
 		btnSearch.setBounds(775, 11, 105, 45);
@@ -112,7 +112,7 @@ public class DisciplinaListView extends JFrame {
 
 	@SuppressWarnings("serial")
 	private void createTable() {
-		String[] columns = { "Código", "Nome", "Dia da Semana", "Horario Inicial", "Carga Horaria Diaria", "Curos" };
+		String[] columns = { "CPF", "Nome", "Area de Conhecimento", "Pontuação" };
 
 		tableModel = new DefaultTableModel(columns, 0) {
 			@Override
@@ -139,13 +139,13 @@ public class DisciplinaListView extends JFrame {
 		lblDigiteOTemo.setBounds(10, 11, 223, 20);
 		contentPane.add(lblDigiteOTemo);
 
-		JButton btnNew = new JButton("Adicionar Nota Registro");
+		JButton btnNew = new JButton("Adicionar Novo Registro");
 		btnNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showRecordPage(null);
 			}
 		});
-		btnNew.setIcon(new ImageIcon(DisciplinaListView.class.getResource("/resources/icons/plus.png")));
+		btnNew.setIcon(new ImageIcon(ProfessorListView.class.getResource("/resources/icons/plus.png")));
 		btnNew.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnNew.setEnabled(true);
 		btnNew.setBounds(616, 366, 264, 35);
@@ -167,10 +167,10 @@ public class DisciplinaListView extends JFrame {
 
 		list = controller.getAll();
 		for (int i = 0; i < list.size(); i++) {
-			Disciplina item;
+			Professor item;
 			try {
 				item = list.get(i);
-				Object[] row = { item.getCodigo(), item.getNome(), item.getDiaSemana(), item.getHorarioInicial(), item.getHorasDiarias(), item.getCodigoCurso() };
+				Object[] row = { item.getCpf(), item.getNome(), item.getAreaConhecimento(), item.getPontuacao() };
 				tableModel.addRow(row);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Erro ao carregar dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -194,10 +194,10 @@ public class DisciplinaListView extends JFrame {
 							int modelRowIndex = table.convertRowIndexToModel(selectedRow);
 
 							if (modelRowIndex >= 0 && modelRowIndex < list.size()) {
-								Disciplina disciplinaSelecionado = list.get(modelRowIndex);
+								Professor selectedRecord = list.get(modelRowIndex);
 
-								if (disciplinaSelecionado != null) {
-									showRecordPage(disciplinaSelecionado);
+								if (selectedRecord != null) {
+									showRecordPage(selectedRecord);
 								}
 							}
 						}
@@ -210,15 +210,15 @@ public class DisciplinaListView extends JFrame {
 		});
 	}
 
-	private void showRecordPage(Disciplina disciplina) {
+	private void showRecordPage(Professor record) {
 		try {
 
-			DisciplinaView disciplinaView = new DisciplinaView();
-			disciplinaView.setVisible(true);
+			ProfessorView view = new ProfessorView(record);
+			view.setVisible(true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Erro ao abrir disciplina: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Erro ao visualizar o registro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

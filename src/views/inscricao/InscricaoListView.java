@@ -1,4 +1,4 @@
-package views;
+package views.inscricao;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,7 +13,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import controllers.ProfessorController;
+import controllers.InscricaoController;
+import domain.entities.Disciplina;
+import domain.entities.Inscricao;
 import domain.entities.Professor;
 import utils.List;
 
@@ -28,7 +30,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ProfessorListView extends JFrame {
+public class InscricaoListView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -36,13 +38,13 @@ public class ProfessorListView extends JFrame {
 	private JTable table;
 	private DefaultTableModel tableModel;
 
-	ProfessorController controller = new ProfessorController();
-	List<Professor> list;
+	InscricaoController controller = new InscricaoController();
+	List<Inscricao> list;
 
 	private JTextField textSearch;
 	private TableRowSorter<DefaultTableModel> sorter;
 
-	public ProfessorListView() {
+	public InscricaoListView() {
 
 		initializeComponent();
 
@@ -88,7 +90,7 @@ public class ProfessorListView extends JFrame {
 				searchRecords();
 			}
 		});
-		btnSearch.setIcon(new ImageIcon(ProfessorListView.class.getResource("/resources/icons/search.png")));
+		btnSearch.setIcon(new ImageIcon(InscricaoListView.class.getResource("/resources/icons/search.png")));
 		btnSearch.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnSearch.setEnabled(true);
 		btnSearch.setBounds(775, 11, 105, 45);
@@ -112,7 +114,8 @@ public class ProfessorListView extends JFrame {
 
 	@SuppressWarnings("serial")
 	private void createTable() {
-		String[] columns = { "CPF", "Nome", "Area de Conhecimento", "Pontuação" };
+
+		String[] columns = { "Código", "Disciplina", "CPF do Professor", "Nome Professor", "Status" };
 
 		tableModel = new DefaultTableModel(columns, 0) {
 			@Override
@@ -145,7 +148,7 @@ public class ProfessorListView extends JFrame {
 				showRecordPage(null);
 			}
 		});
-		btnNew.setIcon(new ImageIcon(ProfessorListView.class.getResource("/resources/icons/plus.png")));
+		btnNew.setIcon(new ImageIcon(InscricaoListView.class.getResource("/resources/icons/plus.png")));
 		btnNew.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnNew.setEnabled(true);
 		btnNew.setBounds(616, 366, 264, 35);
@@ -167,10 +170,13 @@ public class ProfessorListView extends JFrame {
 
 		list = controller.getAll();
 		for (int i = 0; i < list.size(); i++) {
-			Professor item;
+			Inscricao item;
 			try {
 				item = list.get(i);
-				Object[] row = { item.getCpf(), item.getNome(), item.getAreaConhecimento(), item.getPontuacao() };
+				Professor professor = item.getProfessor();
+				Disciplina disciplina = item.getDisciplina();
+				//
+				Object[] row = { item.getCodigo(), disciplina.getNome(), professor.getCpf(), professor.getNome(), item.getStatus() };
 				tableModel.addRow(row);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Erro ao carregar dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -194,7 +200,7 @@ public class ProfessorListView extends JFrame {
 							int modelRowIndex = table.convertRowIndexToModel(selectedRow);
 
 							if (modelRowIndex >= 0 && modelRowIndex < list.size()) {
-								Professor selectedRecord = list.get(modelRowIndex);
+								Inscricao selectedRecord = list.get(modelRowIndex);
 
 								if (selectedRecord != null) {
 									showRecordPage(selectedRecord);
@@ -210,10 +216,10 @@ public class ProfessorListView extends JFrame {
 		});
 	}
 
-	private void showRecordPage(Professor record) {
+	private void showRecordPage(Inscricao record) {
 		try {
 
-			ProfessorView view = new ProfessorView();
+			InscricaoView view = new InscricaoView(record);
 			view.setVisible(true);
 
 		} catch (Exception e) {

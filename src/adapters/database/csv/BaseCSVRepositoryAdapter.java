@@ -11,6 +11,8 @@ import java.util.function.Function;
 
 import domain.interfaces.IEntity;
 import domain.interfaces.IHasMany;
+import domain.interfaces.IHasOne;
+import domain.relationships.OneToOneRelationship;
 import domain.repositories.IBaseRepository;
 import utils.List;
 
@@ -136,6 +138,21 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 					List<T> relatedEntities = loadRelationships(entity);
 					((IHasMany) entity).setRelatedEntities(relatedEntities);
 				}
+				if (entity instanceof IHasOne) {
+					loadOneToOneRelationships(entity);
+				}
+				return entity;
+			}
+		}
+		return null;
+	}
+
+	private T showWithOutRelashionship(Object entityCode) throws Exception {
+		List<T> list = this.list();
+
+		for (int i = 0; i < list.size(); i++) {
+			T entity = list.get(i);
+			if (((IEntity) entity).getPrimaryKey().equals(entityCode)) {
 
 				return entity;
 			}
@@ -143,6 +160,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 		return null;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List<T> list() throws Exception {
 
@@ -158,6 +176,48 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			while (line != null) {
 
 				T entity = this.toEntity.apply(line);
+
+				if (entity instanceof IHasMany) {
+					List<T> relatedEntities = loadRelationships(entity);
+					((IHasMany) entity).setRelatedEntities(relatedEntities);
+				}
+				if (entity instanceof IHasOne) {
+					loadOneToOneRelationships(entity);
+				}
+
+				if (list.isEmpty()) {
+					list.addFirst(entity);
+				} else {
+					list.addLast(entity);
+				}
+
+				line = bufferedReader.readLine();
+			}
+
+			bufferedReader.close();
+
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+
+		return list;
+	}
+
+	private List<T> listWithOutRelashionship() throws Exception {
+
+		this.createFileIfNotExists(this.filePath);
+
+		List<T> list = new List<T>();
+
+		try {
+			FileReader fileReader = new FileReader(this.filePath);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+			String line = bufferedReader.readLine();
+			while (line != null) {
+
+				T entity = this.toEntity.apply(line);
+
 				if (list.isEmpty()) {
 					list.addFirst(entity);
 				} else {
@@ -190,7 +250,7 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 			BaseCSVRepositoryAdapter<?> relatedRepository = getRepositoryFor(relatedClass);
 
 			if (relatedRepository != null) {
-				List<?> allRelatedEntities = relatedRepository.list();
+				List<?> allRelatedEntities = relatedRepository.listWithOutRelashionship();
 				List<T> filteredEntities = new List<T>();
 
 				for (int i = 0; i < allRelatedEntities.size(); i++) {
@@ -277,6 +337,45 @@ public abstract class BaseCSVRepositoryAdapter<T> implements IBaseRepository<T> 
 				this.saveAll((List<T>) list);
 				break;
 			}
+		}
+	}
+
+	protected void loadOneToOneRelationships(T entity) throws Exception {
+
+		if (entity instanceof IHasOne) {
+			IHasOne entityWithRelationships = (IHasOne) entity;
+			List<OneToOneRelationship<?>> relationships = entityWithRelationships.getOneToOneRelationships();
+
+			for (int i = 0; i < relationships.size(); i++) {
+				OneToOneRelationship<?> rel = relationships.get(i);
+
+				loadRelationship(entity, rel);
+			}
+		} else {
+
+		}
+	}
+
+	private <R> void loadRelationship(T entity, OneToOneRelationship<R> relationship) {
+		try {
+			BaseCSVRepositoryAdapter<?> relatedRepository = getRepositoryFor(relationship.getEntityClass());
+			if (relatedRepository != null) {
+				Object foreignKeyValue = getFieldValue(entity, relationship.getForeignKeyFieldName());
+
+				Object relatedEntity = relatedRepository.showWithOutRelashionship(foreignKeyValue);
+
+				if (relatedEntity != null && relationship.getEntityClass().isInstance(relatedEntity)) {
+					@SuppressWarnings("unchecked")
+					R typedEntity = (R) relatedEntity;
+					relationship.setEntity(typedEntity);
+
+				}
+			} else {
+
+			}
+		} catch (Exception e) {
+			System.err.println("Erro ao carregar relacionamento: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

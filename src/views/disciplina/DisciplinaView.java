@@ -1,4 +1,4 @@
-package views;
+package views.disciplina;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,21 +13,20 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import adapters.database.csv.DisciplinaCSVRepositoryAdapter;
-import adapters.database.csv.InscricaoCSVRepositoryAdapter;
-import adapters.database.csv.ProfessorCSVRepositoryAdapter;
+import controllers.DisciplinaController;
+import domain.entities.Curso;
 import domain.entities.Disciplina;
-import domain.entities.Inscricao;
-import domain.entities.Professor;
 import utils.List;
 
-public class InscricaoView extends JFrame {
-	private static final long serialVersionUID = 4L;
+@SuppressWarnings("serial")
+public class DisciplinaView extends JFrame {
 
-	private JTextField txtCodInscricao;
-	private JComboBox<String> comboProfessor;
-	private JComboBox<String> comboDisciplina;
-	private JComboBox<String> comboStatus;
+	private JTextField txtCodDisciplina;
+	private JTextField txtNomeDisciplina;
+	private JComboBox<String> comboDia;
+	private JTextField txtHoraInicial;
+	private JTextField txtHoraDiaria;
+	private JComboBox<String> comboCursos;
 
 	private JButton btnNew;
 	private JButton btnEdit;
@@ -36,46 +35,52 @@ public class InscricaoView extends JFrame {
 	private JButton btnSearch;
 	private JButton btnCancel;
 
-	private InscricaoCSVRepositoryAdapter repository;
-	private ProfessorCSVRepositoryAdapter professorRepository;
-	private DisciplinaCSVRepositoryAdapter disciplinaRepository;
-	private Inscricao inscricao;
-	private List<Disciplina> disciplinas;
-	private List<Professor> professores;
+	private Disciplina disciplina;
+	private List<Curso> cursos;
 
-	public InscricaoView() {
+	private DisciplinaController controller = new DisciplinaController();
 
-		repository = new InscricaoCSVRepositoryAdapter("inscricoes.csv");
-		disciplinaRepository = new DisciplinaCSVRepositoryAdapter("disciplinas.csv");
-		professorRepository = new ProfessorCSVRepositoryAdapter("professor.csv");
+	public DisciplinaView(Disciplina disciplina) {
 
+		initializeComponent();
+		this.disciplina = disciplina;
+		if (disciplina != null) {
+			loadData();
+		}
+	}
+
+	public DisciplinaView() {
+
+		initializeComponent();
+	}
+
+	private void initializeComponent() {
 		try {
-			disciplinas = disciplinaRepository.list();
-			professores = professorRepository.list();
+			cursos = controller.getAllCursos();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		setTitle("Cadastro de Inscrição");
+		setTitle("Cadastro de Disciplina");
 		setSize(576, 480);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		JLabel lblCodInscricao = new JLabel("Código da Inscrição");
-		lblCodInscricao.setBounds(10, 20, 200, 20);
-		getContentPane().add(lblCodInscricao);
+		JLabel lblCodDisciplina = new JLabel("Código da Disciplina");
+		lblCodDisciplina.setBounds(10, 20, 200, 20);
+		getContentPane().add(lblCodDisciplina);
 
-		txtCodInscricao = new JTextField();
-		txtCodInscricao.setBounds(10, 40, 109, 25);
-		txtCodInscricao.addActionListener(e -> {
+		txtCodDisciplina = new JTextField();
+		txtCodDisciplina.setBounds(10, 40, 109, 25);
+		txtCodDisciplina.addActionListener(e -> {
 			try {
 				findByCodigo();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		});
-		getContentPane().add(txtCodInscricao);
+		getContentPane().add(txtCodDisciplina);
 
 		btnSearch = new JButton();
 		btnSearch.addActionListener(new ActionListener() {
@@ -93,51 +98,57 @@ public class InscricaoView extends JFrame {
 		btnSearch.setBounds(120, 39, 27, 27);
 		getContentPane().add(btnSearch);
 
-		JLabel lblDisciplina = new JLabel("Disciplina");
-		lblDisciplina.setBounds(10, 80, 200, 20);
-		getContentPane().add(lblDisciplina);
+		JLabel lblNomeDisciplina = new JLabel("Nome da Disciplina");
+		lblNomeDisciplina.setBounds(10, 75, 200, 20);
+		getContentPane().add(lblNomeDisciplina);
 
-		String[] nomeDisciplina = new String[disciplinas.size()];
+		txtNomeDisciplina = new JTextField();
+		txtNomeDisciplina.setBounds(10, 95, 540, 25);
+		getContentPane().add(txtNomeDisciplina);
 
-		for (int i = 0; i < disciplinas.size(); i++) {
+		JLabel lbldiaSemana = new JLabel("Dia da semana");
+		lbldiaSemana.setBounds(10, 130, 200, 20);
+		getContentPane().add(lbldiaSemana);
+
+		String[] dias = { "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado" };
+
+		comboDia = new JComboBox<String>(dias);
+		comboDia.setBounds(10, 150, 540, 25);
+		getContentPane().add(comboDia);
+
+		JLabel lblHoraInicial = new JLabel("Hora Inicial");
+		lblHoraInicial.setBounds(10, 190, 100, 20);
+		getContentPane().add(lblHoraInicial);
+
+		txtHoraInicial = new JTextField();
+		txtHoraInicial.setBounds(10, 211, 540, 25);
+		getContentPane().add(txtHoraInicial);
+
+		JLabel lblHoradiaria = new JLabel("Horas Diárias");
+		lblHoradiaria.setBounds(10, 245, 100, 20);
+		getContentPane().add(lblHoradiaria);
+
+		txtHoraDiaria = new JTextField();
+		txtHoraDiaria.setBounds(10, 265, 540, 25);
+		getContentPane().add(txtHoraDiaria);
+
+		JLabel lblCurso = new JLabel("Curso da Disciplina");
+		lblCurso.setBounds(10, 295, 200, 20);
+		getContentPane().add(lblCurso);
+
+		String[] nomeCurso = new String[cursos.size()];
+
+		for (int i = 0; i < cursos.size(); i++) {
 			try {
-				nomeDisciplina[i] = disciplinas.get(i).getNome();
+				nomeCurso[i] = cursos.get(i).getNome();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
 
-		comboDisciplina = new JComboBox<String>(nomeDisciplina);
-		comboDisciplina.setBounds(10, 100, 540, 25);
-		getContentPane().add(comboDisciplina);
-
-		JLabel lblProfessor = new JLabel("Professor");
-		lblProfessor.setBounds(10, 140, 200, 20);
-		getContentPane().add(lblProfessor);
-
-		String[] nomeProfessor = new String[professores.size()];
-
-		for (int i = 0; i < professores.size(); i++) {
-			try {
-				nomeProfessor[i] = professores.get(i).getNome();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-
-		comboProfessor = new JComboBox<String>(nomeProfessor);
-		comboProfessor.setBounds(10, 160, 540, 25);
-		getContentPane().add(comboProfessor);
-
-		JLabel lblStatus = new JLabel("Status");
-		lblStatus.setBounds(10, 200, 200, 20);
-		getContentPane().add(lblStatus);
-
-		String[] status = { "Ativo", "Inativo" };
-
-		comboStatus = new JComboBox<String>(status);
-		comboStatus.setBounds(10, 220, 540, 25);
-		getContentPane().add(comboStatus);
+		comboCursos = new JComboBox<String>(nomeCurso);
+		comboCursos.setBounds(10, 314, 540, 25);
+		getContentPane().add(comboCursos);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 348, 540, 2);
@@ -215,21 +226,26 @@ public class InscricaoView extends JFrame {
 	}
 
 	private void disableForm() {
-		txtCodInscricao.setEnabled(true);
-		comboProfessor.setEnabled(false);
-		comboStatus.setEnabled(false);
-		comboDisciplina.setEnabled(false);
+		txtCodDisciplina.setEnabled(true);
+		txtNomeDisciplina.setEnabled(false);
+		comboDia.setEnabled(false);
+		txtHoraInicial.setEnabled(false);
+		txtHoraDiaria.setEnabled(false);
+		comboCursos.setEnabled(false);
 	}
 
 	private void enableForm() {
-		txtCodInscricao.setEnabled(false);
-		comboProfessor.setEnabled(false);
-		comboStatus.setEnabled(true);
-		comboDisciplina.setEnabled(false);
+		txtCodDisciplina.setEnabled(true);
+		txtNomeDisciplina.setEnabled(true);
+		comboDia.setEnabled(true);
+		txtHoraInicial.setEnabled(true);
+		txtHoraDiaria.setEnabled(true);
+		comboCursos.setEnabled(true);
 	}
 
 	private void disableButtons() {
 		btnNew.setEnabled(true);
+		btnSearch.setEnabled(true);
 		btnEdit.setEnabled(true);
 		btnSave.setEnabled(false);
 		btnDelete.setEnabled(false);
@@ -238,6 +254,7 @@ public class InscricaoView extends JFrame {
 
 	private void enableButtons() {
 		btnNew.setEnabled(false);
+		btnSearch.setEnabled(false);
 		btnEdit.setEnabled(false);
 		btnSave.setEnabled(true);
 		btnDelete.setEnabled(true);
@@ -245,39 +262,41 @@ public class InscricaoView extends JFrame {
 	}
 
 	private void clearForm() {
-		inscricao = null;
-		txtCodInscricao.setText("");
+		disciplina = null;
+		txtCodDisciplina.setText("");
+		txtNomeDisciplina.setText("");
+		txtHoraInicial.setText("");
+		txtHoraDiaria.setText("");
 	}
 
 	private void findByCodigo() throws Exception {
-		String codigo = txtCodInscricao.getText().trim();
+		String codigo = txtCodDisciplina.getText().trim();
 
-		Inscricao record = repository.show(codigo);
+		Disciplina record = controller.show(codigo);
 
 		if (record == null) {
 			JOptionPane.showMessageDialog(null, "Registro não encontrado.", getTitle(), JOptionPane.WARNING_MESSAGE);
 			clearForm();
 			return;
 		}
-		inscricao = record;
+		disciplina = record;
 		loadData();
 	}
 
 	private void loadData() {
-		txtCodInscricao.setText(inscricao.getCodigo());
-		comboStatus.setSelectedItem(inscricao.getStatus());
+		txtCodDisciplina.setText(disciplina.getCodigo());
+		txtNomeDisciplina.setText(disciplina.getNome());
+		txtHoraInicial.setText(disciplina.getHorarioInicial());
+		comboDia.setSelectedItem(disciplina.getDiaSemana());
+		txtHoraDiaria.setText(disciplina.getHorasDiarias());
 
-		Disciplina disciplina = null;
-		Professor professor = null;
-
+		Curso curso = null;
 		try {
-			disciplina = disciplinaRepository.show(inscricao.getCodigoDisciplina());
-			professor = professorRepository.show(inscricao.getCpfProfessor());
+			curso = controller.showCurso(disciplina.getCodigoCurso());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		comboDisciplina.setSelectedItem(disciplina.getNome());
-		comboProfessor.setSelectedItem(professor.getNome());
+		comboCursos.setSelectedItem(curso.getNome());
 	}
 
 	private boolean validateForm() throws Exception {
@@ -285,13 +304,43 @@ public class InscricaoView extends JFrame {
 		boolean isValid = true;
 		List<String> listaErros = new List<String>();
 
-		String codInscricao = txtCodInscricao.getText().trim();
+		String codDisciplina = txtCodDisciplina.getText().trim();
+		String nomeDisciplina = txtNomeDisciplina.getText().trim();
+		String horaInicial = txtHoraInicial.getText().trim();
+		String horaDiaria = txtHoraDiaria.getText().trim();
 
-		if (codInscricao == null || codInscricao.isEmpty()) {
+		if (codDisciplina == null || codDisciplina.isEmpty()) {
 			if (listaErros.isEmpty()) {
-				listaErros.addFirst("Código da Inscrição inválido.");
+				listaErros.addFirst("Código da Disciplina inválido.");
 			} else {
-				listaErros.addLast("Código da Inscrição inválido.");
+				listaErros.addLast("Código da Disciplina inválido.");
+			}
+			isValid = false;
+		}
+
+		if (nomeDisciplina == null || nomeDisciplina.isEmpty()) {
+			if (listaErros.isEmpty()) {
+				listaErros.addFirst("Nome da Disciplina inválido.");
+			} else {
+				listaErros.addLast("Nome da Disciplina inválido.");
+			}
+			isValid = false;
+		}
+
+		if (horaInicial == null || horaInicial.isEmpty()) {
+			if (listaErros.isEmpty()) {
+				listaErros.addFirst("Hora inicial inválida.");
+			} else {
+				listaErros.addLast("Hora inicial inválida.");
+			}
+			isValid = false;
+		}
+
+		if (horaDiaria == null || horaDiaria.isEmpty()) {
+			if (listaErros.isEmpty()) {
+				listaErros.addFirst("Horas Diárias inválidas.");
+			} else {
+				listaErros.addLast("Horas Diárias inválidas.");
 			}
 			isValid = false;
 		}
@@ -314,16 +363,13 @@ public class InscricaoView extends JFrame {
 
 	private void newAction() {
 		clearForm();
-		txtCodInscricao.setEnabled(true);
-		comboProfessor.setEnabled(true);
-		comboStatus.setEnabled(true);
-		comboDisciplina.setEnabled(true);
+		enableForm();
 		enableButtons();
-		txtCodInscricao.requestFocusInWindow();
+		txtCodDisciplina.requestFocusInWindow();
 	}
 
 	private void editAction() {
-		if (inscricao == null) {
+		if (disciplina == null) {
 			JOptionPane.showMessageDialog(null, "Selecione um registro.", getTitle(), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
@@ -331,38 +377,33 @@ public class InscricaoView extends JFrame {
 		loadData();
 		enableForm();
 		enableButtons();
-		txtCodInscricao.setEnabled(false);
+		txtCodDisciplina.setEnabled(false);
 	}
 
 	private void saveAction() throws Exception {
 		if (validateForm()) {
 
-			String codDisciplina = null;
-			String cpfProfessor = null;
+			int codCurso = 0;
 
-			for (int i = 0; i < disciplinas.size(); i++) {
-				if (disciplinas.get(i).getNome().equalsIgnoreCase((String) comboDisciplina.getSelectedItem())) {
-					codDisciplina = disciplinas.get(i).getCodigo();
+			for (int i = 0; i < cursos.size(); i++) {
+				if (cursos.get(i).getNome().equalsIgnoreCase((String) comboCursos.getSelectedItem())) {
+					codCurso = cursos.get(i).getCodigo();
 					break;
 				}
 			}
 
-			for (int i = 0; i < professores.size(); i++) {
-				if (professores.get(i).getNome().equalsIgnoreCase((String) comboProfessor.getSelectedItem())) {
-					cpfProfessor = professores.get(i).getCpf();
-					break;
-				}
-			}
-
-			if (inscricao == null) {
-				inscricao = new Inscricao(txtCodInscricao.getText(), codDisciplina, cpfProfessor, (String) comboStatus.getSelectedItem());
-				repository.save(inscricao);
+			if (disciplina == null) {
+				disciplina = controller.save(txtCodDisciplina.getText(), txtNomeDisciplina.getText(), (String) comboDia.getSelectedItem(), txtHoraInicial.getText(), txtHoraDiaria.getText(), codCurso);
 			} else {
-				inscricao.setStatus((String) comboStatus.getSelectedItem());
-				repository.update(inscricao);
+				disciplina.setNome(txtNomeDisciplina.getText());
+				disciplina.setDiaSemana((String) comboDia.getSelectedItem());
+				disciplina.setHorarioInicial(txtHoraInicial.getText());
+				disciplina.setHorasDiarias(txtHoraDiaria.getText());
+				disciplina.setCodigoCurso(comboCursos.getSelectedItem());
+				controller.update(disciplina);
 			}
-			txtCodInscricao.setText(inscricao.getCodigo());
-			txtCodInscricao.requestFocusInWindow();
+			txtCodDisciplina.setText(disciplina.getCodigo());
+			txtCodDisciplina.requestFocusInWindow();
 
 			JOptionPane.showMessageDialog(null, "Registro salvo com sucesso.", getTitle(), JOptionPane.INFORMATION_MESSAGE);
 
@@ -382,13 +423,13 @@ public class InscricaoView extends JFrame {
 			return;
 		}
 
-		if (inscricao == null) {
+		if (disciplina == null) {
 			JOptionPane.showMessageDialog(null, "Selecione um registro.", getTitle(), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
 		try {
-			repository.delete(inscricao);
+			controller.delete(disciplina);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -399,7 +440,7 @@ public class InscricaoView extends JFrame {
 		disableButtons();
 		disableForm();
 
-		txtCodInscricao.requestFocusInWindow();
+		txtCodDisciplina.requestFocusInWindow();
 
 		return;
 	}
@@ -408,6 +449,6 @@ public class InscricaoView extends JFrame {
 		clearForm();
 		disableForm();
 		disableButtons();
-		txtCodInscricao.requestFocusInWindow();
+		txtCodDisciplina.requestFocusInWindow();
 	}
 }
