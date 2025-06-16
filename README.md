@@ -31,19 +31,113 @@ Para tanto, deve-se popular uma tabela de espalhamento com uma função hash cri
 do sistema.
 
 ---
-## 📋 Análise de Requisitos
-<img width="80px" src="./docs/bouncing-circles.svg"/>
+📋 **Requisitos Funcionais – Sistema de Processo Seletivo de Docentes**
+
+🔐 **Acesso ao Sistema** 
+
+**RF01** – O sistema deve permitir acesso apenas a funcionários cadastrados. 
+
+ 
+
+📁 **Manipulação de Arquivos CSV** 
+
+**RF02** – O sistema deve ler e gravar dados exclusivamente através do sistema, não permitindo edição direta dos arquivos CSV. 
+
+**RF03** – O sistema deve manipular os seguintes arquivos: 
+
+disciplinas.csv 
+cursos.csv 
+professores.csv 
+inscricoes.csv 
+ 
+
+📚 **CRUDs Individuais (Cada um com tela própria)** 
+
+🟩 **Disciplinas** 
+
+**RF04** – Deve haver uma tela de CRUD para disciplinas, com as seguintes funcionalidades: 
+
+Inserir nova disciplina 
+Atualizar dados da disciplina 
+Remover disciplina (e suas inscrições associadas) 
+Consultar disciplinas (usando fila)
+
+**RF05** – A disciplina deve conter os seguintes campos: 
+
+Código da disciplina 
+Nome da disciplina 
+Dia da semana 
+Horário inicial 
+Quantidade de horas diárias 
+Código do curso associado
+
+**RF06** – Ao remover uma disciplina, o sistema deve também remover todas as inscrições associadas a essa disciplina do arquivo inscricoes.csv. 
+
+ 
+
+🟦 **Cursos** 
+
+**RF07** – Deve haver uma tela de CRUD para cursos, com as funcionalidades de inserir, atualizar, remover e consultar. 
+
+**RF08** – O curso deve conter: 
+
+Código do curso 
+Nome do curso 
+Área do conhecimento 
+ 
+
+🟨 **Professores** 
+
+**RF09** – Deve haver uma tela de CRUD para professores, com: 
+
+Cadastro do CPF 
+Nome 
+Área de inscrição 
+Quantidade de pontos
+
+**RF10** – A pontuação do professor deve ser validada e inserida por um funcionário. 
+
+ 
+
+🟧 **Inscrições em Processos Seletivos** 
+
+**RF11** – Deve haver uma tela de CRUD para inscrições, onde se possa: 
+
+Cadastrar uma inscrição com: CPF do professor, código da disciplina e código do processo (apenas se o processo estiver ativo) 
+Atualizar e remover inscrições 
+Consultar inscrições 
+ 
+
+🔄 **Estruturas de Dados Obrigatórias** 
+
+**RF12** – As operações de atualização e remoção dos arquivos devem ser feitas utilizando listas encadeadas, sem deixar linhas vazias nos arquivos. 
+
+**RF13** – As consultas de disciplinas, cursos e professores devem utilizar uma fila (FIFO) para exibir os dados em tela. 
+
+ 
+
+🔍 **Tela de Consulta de Inscritos por Disciplina** 
+
+**RF14** – Deve haver uma tela para consultar os inscritos em uma disciplina específica, mostrando: 
+
+Todos os dados dos professores inscritos (não apenas CPF) 
+Ordenação por pontuação (maior para menor)
+
+**RF15** – A lista exibida deve ser montada com base no arquivo inscricoes.csv, utilizando: 
+
+Lista de inscritos 
+Algoritmo de ordenação implementado manualmente, sem uso de bibliotecas internas do Java.
 
 
 ---
 
 ## 📌 Casos de Uso
-<img width="80px" src="./docs/bouncing-circles.svg"/>
+<img width="930px" src="./docs/usecases.png"/>
 
 ---
 
 ## 📦 Diagrama de Classes
-<img width="80px" src="./docs/bouncing-circles.svg"/>
+<img width="930px" src="./docs/image.jpeg"/>
 
 ---
 
