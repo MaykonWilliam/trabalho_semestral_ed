@@ -62,17 +62,17 @@ public class LoginView extends JFrame {
 		txtUser = new JTextField();
 		txtUser.setText((String) null);
 		txtUser.setEnabled(true);
-		txtUser.setBounds(10, 183, 383, 25);
+		txtUser.setBounds(10, 209, 383, 25);
 		contentPane.add(txtUser);
 
 		JLabel lblUsurio = new JLabel("Usuário:");
 		lblUsurio.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblUsurio.setBounds(10, 163, 383, 20);
+		lblUsurio.setBounds(10, 189, 383, 20);
 		contentPane.add(lblUsurio);
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(LoginView.class.getResource("/resources/images/logo-login.png")));
-		lblNewLabel.setBounds(0, 0, 293, 183);
+		lblNewLabel.setBounds(26, 0, 293, 183);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblUsurio_1 = new JLabel("Senha:");
@@ -104,6 +104,12 @@ public class LoginView extends JFrame {
 		lblFeedback.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblFeedback.setBounds(10, 301, 383, 20);
 		contentPane.add(lblFeedback);
+		
+		JLabel lblAcessoRestrito = new JLabel("Acesso Restrito");
+		lblAcessoRestrito.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAcessoRestrito.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblAcessoRestrito.setBounds(10, 151, 383, 20);
+		contentPane.add(lblAcessoRestrito);
 	}
 
 	private void login() {

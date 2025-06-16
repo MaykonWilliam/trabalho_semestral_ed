@@ -10,6 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import views.consultas.ConsultaInscritosView;
 import views.curso.CursoListView;
 import views.curso.CursoView;
 import views.disciplina.DisciplinaListView;
@@ -113,6 +114,18 @@ public class MainView extends JFrame {
 		});
 
 		menuBar.add(inscricaoMenu);
+
+		JMenuItem consultarInscritosMenuItem = new JMenuItem("Consultar Inscritos");
+
+		JMenu consultaMenu = new JMenu("Consultas");
+		consultaMenu.add(consultarInscritosMenuItem);
+
+		consultarInscritosMenuItem.addActionListener(e -> {
+			ConsultaInscritosView consultaInscritosView = new ConsultaInscritosView();
+			consultaInscritosView.setVisible(true);
+		});
+
+		menuBar.add(consultaMenu);
 
 		setJMenuBar(menuBar);
 	}
